@@ -1,5 +1,5 @@
 <?php ob_start(); ?>
-    <button type="button" class="btn btn-outline-light" data-toggle="modal" data-target="#subscribeForm"">S'inscrire</button>
+    <button type="button" class="btn btn-outline-light" data-toggle="modal" data-target="#subscribeForm">S'inscrire</button>
     <button type="button" class="btn btn-outline-light"  data-toggle="modal" data-target="#connexionForm">Se connecter</button>
 
     <!-- Modal Subscription-->
@@ -64,7 +64,7 @@
                     </button>
                 </div>
             <div class="modal-body">
-                <form>
+                <form action="index.php?action=connection" method="post" id="connexion-form">
                     <div class="form-group">
                         <label for="username">Pseudo</label>
                         <input type="text" class="form-control" name="username">
@@ -77,11 +77,14 @@
             </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-primary">Se connecter</button>
+                    <button type="submit" class="btn btn-primary" form="connexion-form">Se connecter</button>
                 </div>
             </div>
         </div>
     </div>
-<?php $menu = ob_get_clean(); ?>
+<?php $disconnected_menu = ob_get_clean(); ?>
 
-<?php require('templateFront.php'); ?>
+<?php ob_start(); ?>
+
+
+<?php $connected_menu = ob_get_clean(); ?>

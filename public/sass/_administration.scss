@@ -1,0 +1,46 @@
+
+.navbar-collapse {
+    p {
+        margin: 0;
+    }
+}
+
+.profile-picture {
+    height: 60px;
+}
+
+.categories {
+    height: 150px;
+    h2 {
+        font-size: 1.4em;
+    }
+}
+
+main {
+    flex: 1;
+    
+    nav {
+        height: 150px;
+    }
+
+    table {
+        font-size: 0.9rem;
+        vertical-align: center;
+
+        td, th {
+            vertical-align: middle!important;
+        }
+        
+        img {
+            height: 50px;
+            width: auto;
+        }
+    }
+
+    .add-action {
+        img {
+            height: 50px;
+            width: auto;
+        }
+    }
+}
