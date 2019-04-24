@@ -19,7 +19,7 @@
     <?php } 
         } ?>
 
-<div class="m-2">
+<div class="table-responsive m-2">
 <table class="table table-bordered table-hover table-sm text-center">
   <thead class="thead-dark">
     <tr>
@@ -43,7 +43,7 @@
           <a href="index.php?action=editBanner&amp;id=<?= $banner->id() ?>">
             <img src="https://img.icons8.com/plasticine/100/000000/edit.png">
           </a>
-          <a data-toggle="modal" href="#deleteForm<?= $banner->id() ?>">
+          <a data-toggle="modal" id="banner-<?=$banner->id()?>" data-action="delete" href="#deleteModal">
             <img src="https://img.icons8.com/plasticine/100/000000/delete.png">
           </a>
         </td>
@@ -53,12 +53,7 @@
 </table>
 </div>
 
-<?php 
-foreach($banners as $banner) {
-  $element_id = $banner->id();
-  require('deleteModalView.php');
-}
-?>
+<?php require('deleteModalView.php'); ?>
 
 <?php $content = ob_get_clean(); ?>
 

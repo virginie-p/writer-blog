@@ -9,7 +9,7 @@ class FrontEndController {
         $banner_manager = new BannerManager();
         $banners = $banner_manager->getBanners();
 
-        require(__DIR__.'\..\view\front\homepageView.php');
+        require(__DIR__.'/../view/front/homepageView.php');
     }
 
     public function connectUser() {

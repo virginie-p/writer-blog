@@ -12,29 +12,58 @@ session_start();
 try {
     $controller_front = new FrontEndController();
     $controller_back = new BackEndController();
+
+    $action = $_GET['action'];
     
     if (isset($_SESSION['user'])) {
         if ($_SESSION['user']->userType() == 1 || $_SESSION['user']->userType() == 2) {
+        
             
-            if (isset($_GET['action'])) {
-                if ($_GET['action'] == 'showBannersManagement') {
-                    $controller_back->showBannerSection();
+            if (isset($action)) {
+                if ($action == 'showBannersManagement') {
+                    $controller_back->showBannersSection();
                 }
-                elseif ($_GET['action'] == 'createBanner') {
+                elseif ($action == 'createBanner') {
                     $controller_back->createBanner();
                 }
-                elseif ($_GET['action'] == 'editBanner'){
+                elseif ($action == 'editBanner'){
                     if (isset($_GET['id']) && $_GET['id'] > 0) {
                         $controller_back->editBanner($_GET['id']);
                     }
                 }
-                elseif($_GET['action'] == 'deleteBanner') {
+                elseif($action == 'deleteBanner') {
                     if (isset($_GET['id']) && $_GET['id'] > 0) {
                         $controller_back->deleteBanner($_GET['id']);
                     }
                 }
-                elseif($_GET['action'] == 'disconnection') {
+                elseif ($action == "showBooksManagement") {
+                    $controller_back->showBooksSection();
+                }
+                elseif($action == 'disconnection') {
                     $controller_front->disconnectUser();
+                }
+                elseif ($action == 'createBook') {
+                    $controller_back->createBook();
+                }
+                elseif ($action == 'editBook'){
+                    if (isset($_GET['id']) && $_GET['id'] > 0) {
+                        $controller_back->editBook($_GET['id']);
+                    }
+                }
+                elseif ($action == 'showChaptersManagement') {
+                    if (isset($_GET['bookId']) && $_GET['bookId'] > 0) {
+                        $controller_back->showChaptersSection($_GET['bookId']);
+                    }
+                }
+                elseif ($action == 'createChapter') {
+                    if (isset($_GET['bookId']) && $_GET['bookId'] > 0){
+                        $controller_back->createChapter($_GET['bookId']);
+                    }
+                }
+                elseif ($action == 'editChapter'){
+                    if (isset($_GET['id']) && $_GET['id'] > 0) {
+                        $controller_back->editChapter($_GET['id']);
+                    }
                 }
             }
             else {
@@ -43,8 +72,8 @@ try {
         }
         
     }
-    elseif (isset($_GET['action'])) {
-        if ($_GET['action'] == 'connection') {
+    elseif (isset($action)) {
+        if ($action == 'connection') {
             $controller_front->connectUser();
         }
     }
@@ -55,5 +84,5 @@ try {
     
 }
 catch (Exception $e) {
-    echo 'Erreur : ' . $e->getMessage();
+    throw new Exception($e->getMessage());
 }

@@ -21,28 +21,23 @@ class User extends Entity
     const EMPTY_USERNAME = 1;
           
     /** GETTERS */
-    public function id()
-    {
+    public function id() {
         return $this->id;
     }
 
-    public function username()
-    {
+    public function username() {
         return $this->username;
     }
 
-    public function password()
-    {
+    public function password() {
         return $this->password;
     }
 
-    public function firstname()
-    {
+    public function firstname()  {
         return $this->firstname;
     }
 
-    public function lastname()
-    {
+    public function lastname() {
         return $this->lastname;
     }
 

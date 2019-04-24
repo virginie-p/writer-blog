@@ -7,7 +7,7 @@ class UserManager extends Manager {
     public function getSuperAdmin() {
         $db = $this->MySQLConnect();
         $req = $db->query('SELECT username, password, firstname, lastname, profile_picture, DATE_FORMAT(birthdate, \'%d/%m/%Y à %Hh%imin%ss\') AS birthdate, description, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date
-        FROM users WHERE user_type = 1');
+        FROM projet_4_users WHERE user_type = 1');
 
         $req->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'App\entity\User');
 
@@ -18,12 +18,12 @@ class UserManager extends Manager {
 
     public function getAdmins() {
         $db = $this->MySQLConnect();
-        $req = $db->query('SELECT username, password, firstname, lastname, profile_picture, DATE_FORMAT(birthdate, \'%d/%m/%Y à %Hh%imin%ss\') AS birthdate, description, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date
-        FROM users WHERE user_type = 2');
+        $req = $db->query('SELECT id, username, password, firstname, lastname, profile_picture, DATE_FORMAT(birthdate, \'%d/%m/%Y à %Hh%imin%ss\') AS birthdate, description, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date
+        FROM projet_4_users WHERE user_type = 2');
 
         $req->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'App\entity\User');
 
-        $admin = $req->fetchAll();
+        $admins = $req->fetchAll();
 
         return $admins;
     }
@@ -31,7 +31,7 @@ class UserManager extends Manager {
     public function getMembers() {
         $db = $this->MySQLConnect();
         $req = $db->query('SELECT username, password, firstname, lastname, profile_picture, DATE_FORMAT(birthdate, \'%d/%m/%Y à %Hh%imin%ss\') AS birthdate, description, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date
-        FROM users WHERE user_type = 3');
+        FROM projet_4_users WHERE user_type = 3');
 
         $req->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'App\entity\User');
 
@@ -43,7 +43,7 @@ class UserManager extends Manager {
     public function getUser($username) {
         $db = $this->MySQLConnect();
         $req = $db->prepare('SELECT username, password, firstname, lastname,user_type, profile_picture, DATE_FORMAT(birthdate, \'%d/%m/%Y à %Hh%imin%ss\') AS birthdate, description, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date
-        FROM users WHERE username = ?');
+        FROM projet_4_users WHERE username = ?');
         $req->execute(array($username));
 
         $req->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'App\entity\User');
@@ -55,7 +55,7 @@ class UserManager extends Manager {
 
     public function createUser(User $user) {
         $db = $this->MySQLConnect();
-        $req = $db->prepare('INSERT INTO users(username, password, firstname, lastname, user_type, profile_picture, birthdate, description, creation_date) 
+        $req = $db->prepare('INSERT INTO projet_4_users(username, password, firstname, lastname, user_type, profile_picture, birthdate, description, creation_date) 
         VALUES (:username, :password, :firstname, :lastname, :user_type, :profile_picture, :birthdate, :description, NOW())');
 
         $affected_lines = $req->execute(array(
@@ -74,7 +74,7 @@ class UserManager extends Manager {
 
     public function editUser(User $user) {
         $db = $this->MySQLConnect();
-        $req = $db->prepare('UPDATE users SET password = :password, firstname = :firstname, lastname = :lastname, profile_picture = :profile_picture, birthdate = :birthdate, description = :description
+        $req = $db->prepare('UPDATE projet_4_users SET password = :password, firstname = :firstname, lastname = :lastname, profile_picture = :profile_picture, birthdate = :birthdate, description = :description
         WHERE id = :id');
 
         $affected_lines = $req->execute(array(
@@ -91,7 +91,7 @@ class UserManager extends Manager {
 
     public function deleteUser($user_id) {
         $db = $this->MySQLConnect();
-        $req = $db->prepare('DELETE * FROM users WHERE id = ?');
+        $req = $db->prepare('DELETE * FROM projet_4_users WHERE id = ?');
         
         $affectedLines = $req->execute(array($user_id));
 

@@ -3,20 +3,17 @@ namespace App\controller;
 
 use App\model\BannerManager;
 use App\model\UserManager;
+use App\model\BookManager;
+use App\model\ChapterManager;
 use App\entity\Banner;
+use App\entity\Book;
+use App\entity\Chapter;
 use App\entity\Image;
 
 class BackEndController {
 
     public function showHomepageBack() {
-        require(__DIR__.'\..\view\back\homepageView.php');
-    }
-
-    public function showBannerSection() {
-        $banner_manager = new BannerManager();
-        $banners = $banner_manager->getBanners();
-
-        require(__DIR__.'\..\view\back\bannerManagementView.php');
+        require(__DIR__.'/../view/back/homepageView.php');
     }
 
     public function createImageInFolder($image_input_name, $width, $height, $folder) {
@@ -35,6 +32,13 @@ class BackEndController {
         }
 
         return array($upload_errors, $image_name);
+    }
+
+    public function showBannersSection() {
+        $banner_manager = new BannerManager();
+        $banners = $banner_manager->getBanners();
+
+        require(__DIR__.'/../view/back/bannersManagementView.php');
     }
 
     public function createBanner() {
@@ -77,9 +81,7 @@ class BackEndController {
                             } else {
                                 header('Location:index.php?action=showBannersManagement&banner=creation');
                             }
-                            
                         }
-
                     } else {
                         $errors[]='image_or_size_invalid';
                     }
@@ -90,7 +92,7 @@ class BackEndController {
             }
         }
 
-        require(__DIR__.'\..\view\back\bannerCreationView.php');
+        require(__DIR__.'/../view/back/createBannerView.php');
     }
 
     public function editBanner($id) {
@@ -151,7 +153,7 @@ class BackEndController {
         
         $banner = $banner_manager->getBanner($id);
 
-        require(__DIR__.'\..\view\back\editBannerView.php');
+        require(__DIR__.'/../view/back/editBannerView.php');
     }
 
     public function deleteBanner($id) {
@@ -159,5 +161,262 @@ class BackEndController {
         $banner_manager->deleteBanner($id);
 
         header('Location:index.php?action=showBannersManagement&banner=delete');
+    }
+
+    public function showBooksSection() {
+        $book_manager = new BookManager(); 
+        $books = $book_manager->getBooks();
+
+        require(__DIR__.'/../view/back/booksManagementView.php');
+    }
+
+    public function createBook() {
+        $book_manager =  new BookManager();
+        $user_manager = new UserManager();
+        $authors= $user_manager->getAdmins();
+
+        $book_data = [];
+
+        if (isset($_POST) && !empty($_POST)) {
+            $errors = [];
+
+            if (isset($_POST['author'], $_POST['title'], $_POST['subtitle'], $_FILES['book-cover-image'])) {
+                if (!empty($_POST['author']) && !empty($_POST['title']) && !empty($_POST['subtitle']) && !empty($_FILES['book-cover-image']['name'])) {
+                    $book_data = array(
+                        'author_id' => $_POST['author'],
+                        'title' => $_POST['title'],
+                        'subtitle' => $_POST['subtitle']
+                    );
+
+                    $image_input_name = 'book-cover-image';
+                              
+                    if($_FILES[$image_input_name]['error'] == 0) {
+                        $upload_data = $this->createImageInFolder($image_input_name, 595, 842, 'books_covers');
+
+                        $upload_errors = $upload_data[0];
+
+                        if (!empty($upload_data[1])) {
+                        
+                            $image_name = $upload_data[1];
+
+                            $book_data['book_cover_image'] = $image_name;
+
+                            $new_book = new Book($book_data);
+
+                            $affected_lines = $book_manager->createBook($new_book);
+
+                            if (!$affected_lines) {
+                                $errors[] = 'upload_problem';
+                            } else {
+                                header('Location:index.php?action=showBooksManagement&book=creation');
+                            }
+                        }
+                    } else {
+                        $errors[]='image_or_size_invalid';
+                    }
+                }
+                else  {
+                    $errors[] = 'missing_fields';
+                }
+            }
+        }
+
+        require(__DIR__.'/../view/back/createBookView.php');
+    }
+
+    public function editBook($id) {
+        $book_manager = new BookManager();
+        $user_manager = new UserManager();
+        $authors= $user_manager->getAdmins();
+        
+        $modified_data = [];
+
+        if (isset($_POST) && !empty($_POST)) {
+            $errors = [];
+
+            if (isset($_POST['id'], $_POST['author'], $_POST['title'], $_POST['subtitle'], $_FILES['book-cover-image'])) {
+                if (!empty($_POST['id']) && !empty($_POST['author']) && !empty($_POST['title']) && !empty($_POST['subtitle'])) {
+                    $modified_data = array(
+                        'id' => $_POST['id'],
+                        'author_id' => $_POST['author'],
+                        'title' => $_POST['title'],
+                        'subtitle' => $_POST['subtitle']
+                    );
+                }
+                else {
+                    $errors[]= 'missing_fields';
+                }
+            }
+
+            $image_input_name = 'book-cover-image';
+
+            if (!empty($_FILES[$image_input_name]['name'])) {
+                              
+                if($_FILES[$image_input_name]['error'] == 0) {
+                    $upload_data = $this->createImageInFolder($image_input_name, 595, 842, 'books_covers');
+
+                    $upload_errors = $upload_data[0];
+                    $image_name = $upload_data[1];
+                    
+                    $modified_data['book_cover_image'] = $image_name;
+
+                    $edited_book = new Book($modified_data);
+
+                    $affected_lines = $book_manager->editBook($edited_book);
+
+                    if (!$affected_lines) {
+                        $errors[] = 'upload_problem';
+                    } else {
+                        $book_edit_succeed = 1;
+                    }
+
+                } else {
+                    $errors[]='image_or_size_invalid';
+                }
+                
+            } else {
+                $edited_book = new Book($modified_data);
+
+                $affected_lines = $book_manager->editBook($edited_book);
+
+                if (!$affected_lines) {
+                    $errors[] = 'upload_problem';
+                } else {
+                    $book_edit_succeed = 1;
+                }
+            }
+        }
+        
+        $book = $book_manager->getBook($id);
+
+        require(__DIR__.'/../view/back/editBookView.php');
+ 
+    }
+
+    public function showChaptersSection($book_id) {
+        $chapter_manager = new ChapterManager();
+        $chapters = $chapter_manager->getChapters($book_id);
+        $book_manager = new BookManager();
+        $book = $book_manager->getBook($book_id);
+
+        require(__DIR__.'/../view/back/chaptersManagementView.php');
+    }
+
+    public function createChapter($book_id) {
+        $chapter_manager = new ChapterManager();
+        $book_manager = new BookManager();
+        $book = $book_manager->getBook($book_id);
+
+        $chapter_data = [];
+
+        if (isset($_POST) && !empty($_POST)) {
+            $errors = [];
+
+            if (isset($_POST['title'], $_POST['content'], $_FILES['chapter-image'])) {
+                if (!empty($_POST['title']) && !empty($_POST['content']) && !empty($_FILES['chapter-image']['name'])) {
+                    $chapter_data = array(
+                        'book_id' => $book_id,
+                        'title' => $_POST['title'],
+                        'content' => $_POST['content']
+                    );
+
+                    $image_input_name = 'chapter-image';
+                              
+                    if($_FILES[$image_input_name]['error'] == 0) {
+                        $upload_data = $this->createImageInFolder($image_input_name, 1250, 350, 'chapters_images');
+
+                        $upload_errors = $upload_data[0];
+
+                        if (!empty($upload_data[1])) {
+                        
+                            $image_name = $upload_data[1];
+
+                            $chapter_data['image'] = $image_name;
+
+                            $new_chapter = new Chapter($chapter_data);
+
+                            $affected_lines = $chapter_manager->createChapter($new_chapter);
+
+                            if (!$affected_lines) {
+                                $errors[] = 'upload_problem';
+                            } else {
+                                header('Location:index.php?action=showChaptersManagement&bookId='.$book_id.'&chapter=creation');
+                            }
+                        }
+                    } else {
+                        $errors[]='image_or_size_invalid';
+                    }
+                }
+                else  {
+                    $errors[] = 'missing_fields';
+                }
+            }
+        }
+
+        require(__DIR__.'/../view/back/createChapterView.php');
+
+    }
+    
+    public function editChapter($chapter_id){
+        $chapter_manager = new ChapterManager();
+
+        if (isset($_POST) && !empty($_POST)) {
+            $errors = [];
+
+            if (isset($_POST['title'], $_POST['content'], $_FILES['chapter-image'])) {
+                if (!empty($_POST['title']) && !empty($_POST['content'])) {
+                    $modified_data = array(
+                        'id' => $chapter_id,
+                        'title' => $_POST['title'],
+                        'content' => $_POST['content']
+                    );
+                }
+                else {
+                    $errors[]= 'missing_fields';
+                }
+            }
+
+            $image_input_name = 'chapter-image';
+
+            if (!empty($_FILES[$image_input_name]['name'])) {
+                              
+                if($_FILES[$image_input_name]['error'] == 0) {
+                    $upload_data = $this->createImageInFolder($image_input_name, 595, 842, 'chapters_images');
+
+                    $upload_errors = $upload_data[0];
+                    $image_name = $upload_data[1];
+                    
+                    $modified_data['image'] = $image_name;
+
+                    $edited_chapter = new Chapter($modified_data);
+
+                    $affected_lines = $book_manager->editChapter($edited_chapter);
+
+                    if (!$affected_lines) {
+                        $errors[] = 'upload_problem';
+                    } else {
+                        $chapter_edit_succeed = 1;
+                    }
+
+                } else {
+                    $errors[]='image_or_size_invalid';
+                }
+                
+            } else {
+                $edited_chapter = new Chapter($modified_data);
+
+                $affected_lines = $chapter_manager->editChapter($edited_chapter);
+
+                if (!$affected_lines) {
+                    $errors[] = 'upload_problem';
+                } else {
+                    $chapter_edit_succeed = 1;
+                }
+            }
+        }
+
+        $chapter = $chapter_manager->getChapter($chapter_id);
+
+        require(__DIR__.'/../view/back/editChapterView.php');
     }
 }

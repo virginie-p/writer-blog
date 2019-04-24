@@ -5,7 +5,7 @@
                 <img src="https://img.icons8.com/clouds/100/000000/picture.png">
                 <h2>Bannières</h2>                        
             </a>
-            <a href="" class="books col-md-3 border text-center">
+            <a href="index.php?action=showBooksManagement" class="books col-md-3 border text-center">
                 <img src="https://img.icons8.com/clouds/100/000000/literature.png">
                 <h2>Livres</h2>
             </a>
