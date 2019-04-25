@@ -17,6 +17,38 @@ footer {
     footer .social-link img {
       width: 100%; }
 
+#latest-chapters h2 {
+  color: #1f486e; }
+
+.books-covers {
+  height: 350px;
+  width: auto; }
+
+.chapters-images {
+  height: 100px;
+  width: auto; }
+
+#content {
+  margin-left: 200px;
+  margin-right: 200px; }
+
+.book-chapter-category {
+  color: #505050; }
+
+li.media {
+  border-radius: 6px; }
+  li.media img {
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px; }
+
+.jumbotron {
+  background-color: #1f486e8a;
+  color: white; }
+  .jumbotron h1 {
+    color: #cff1f1; }
+  .jumbotron .lead {
+    font-size: 2rem; }
+
 .navbar-collapse p {
   margin: 0; }
 

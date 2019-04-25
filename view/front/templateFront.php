@@ -14,7 +14,7 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="index.php">
                 <img src="public\images\logo.png" class="d-inline-block align-center text-white">
                 Evasion littéraire
             </a>
@@ -22,10 +22,10 @@
             <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Accueil</a>
+                        <a class="nav-link" href="index.php">Accueil</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Livres</a>
+                        <a class="nav-link" href="index.php?action=showBooksList">Livres</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Contact</a>
@@ -49,7 +49,7 @@
         </nav>
     </header>
 
-    <section ><?= $content ?></section>
+    <section id="content" ><?= $content ?></section>
     
     <footer class="footer mt-auto py-3 bg-dark">
         <div class="container">

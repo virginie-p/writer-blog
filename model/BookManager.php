@@ -8,7 +8,8 @@ class BookManager extends Manager {
     public function getBooks() {
         $db = $this->MySQLConnect();
         $req = $db->query(
-            'SELECT books.id, 
+            'SELECT books.id,
+            book_cover_image,
             author_id, 
             firstname, 
             lastname, 

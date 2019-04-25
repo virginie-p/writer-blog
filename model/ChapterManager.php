@@ -31,6 +31,31 @@ class ChapterManager extends Manager {
         return $chapters;    
     }
 
+    public function getLatestChapters() {
+        $db = $this->MySQLConnect();
+        $req = $db->query(
+            'SELECT chapters.id,
+            book_id,
+            books.title AS book_title,
+            chapters.title,
+            content,
+            image,
+            DATE_FORMAT(chapters.creation_date, \'%d/%m/%Y à %Hh%i\') AS creation_date, 
+            DATE_FORMAT(chapters.modification_date, \'%d/%m/%Y à %Hh%i\') AS modification_date
+            FROM projet_4_chapters AS chapters
+            INNER JOIN projet_4_books AS books
+            ON chapters.book_id = books.id
+            ORDER BY chapters.id DESC
+            LIMIT 6'
+        );
+
+        $req->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'App\entity\Chapter');
+
+        $chapters = $req->fetchAll();
+
+        return $chapters;    
+    }
+
     public function getChapter($chapter_id) {
         $db = $this->MySQLConnect();
         $req = $db->prepare(

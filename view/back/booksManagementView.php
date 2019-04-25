@@ -37,7 +37,7 @@
         <td><?= $book->firstname . ' ' . $book->lastname ?></td>
         <td><?= $book->title() ?></td>
         <td>
-          <a href="index.php?action=showChaptersManagement&amp;id=<?=$book->id()?>">
+          <a href="index.php?action=showChaptersManagement&amp;bookId=<?=$book->id()?>">
             <img src="https://img.icons8.com/plasticine/100/000000/document.png">
           </a>
         </td>

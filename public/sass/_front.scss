@@ -1,0 +1,45 @@
+#latest-chapters {
+    h2 {
+        color: #1f486e;
+    }
+}
+
+.books-covers {
+    height: 350px;
+    width: auto;
+}
+
+.chapters-images {
+    height: 100px;
+    width: auto;
+}
+
+#content{
+    margin-left: 200px;
+    margin-right: 200px;
+}
+
+.book-chapter-category {
+    color: rgb(80, 80, 80);
+}
+
+li.media {
+    border-radius: 6px;
+    img {
+        border-top-left-radius: 6px;
+        border-bottom-left-radius: 6px;
+    }
+}
+
+.jumbotron {
+    background-color: #1f486e8a;
+    color: white;
+
+    h1 {
+        color: rgb(207, 241, 241);
+    }
+
+    .lead {
+        font-size: 2rem;
+    }
+}

@@ -13,9 +13,9 @@
                     </button>
                 </div>
             <div class="modal-body">
-                <form>
+                <form action="index.php?action=subscribe" method="post" id="subscribe">
                     <div class="form-group">
-                        <label for="subscribe-username">Pseudo</label>
+                        <label for="username">Pseudo</label>
                         <input type="text" class="form-control" name="subscribe-username">
                     </div>
                     <div class="form-group">
@@ -47,7 +47,7 @@
             </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                    <button type="button" class="btn btn-primary">S'inscrire</button>
+                    <button type="submit" class="btn btn-primary" form="susbscribe">S'inscrire</button>
                 </div>
             </div>
         </div>

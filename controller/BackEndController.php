@@ -53,10 +53,10 @@ class BackEndController {
                 if (!empty($_POST['display-order']) && !empty($_POST['title']) && !empty($_POST['caption']) && !empty($_POST['button-title']) && !empty($_POST['button-link']) && !empty($_FILES['banner-image']['name'])) {
                     $banner_data = array(
                         'display_order' => $_POST['display-order'],
-                        'title' => $_POST['title'],
-                        'caption' => $_POST['caption'],
-                        'button_title' => $_POST['button-title'],
-                        'button_link' => $_POST['button-link']
+                        'title' => strip_tags($_POST['title']),
+                        'caption' => strip_tags($_POST['caption']),
+                        'button_title' => strip_tags($_POST['button-title']),
+                        'button_link' => strip_tags($_POST['button-link'])
                     );
 
                     $image_input_name = 'banner-image';
@@ -70,7 +70,7 @@ class BackEndController {
                         
                             $image_name = $upload_data[1];
 
-                            $banner_data['image'] = $image_name;
+                            $banner_data['image'] = strip_tags($image_name);
 
                             $new_banner = new Banner($banner_data);
 
@@ -106,12 +106,12 @@ class BackEndController {
             if (isset($_POST['id'], $_POST['display-order'], $_POST['title'], $_POST['caption'], $_POST['button-title'], $_POST['button-link'], $_FILES['banner-image'])) {
                 if (!empty($_POST['id']) && !empty($_POST['display-order']) && !empty($_POST['title']) && !empty($_POST['caption']) && !empty($_POST['button-title']) && !empty($_POST['button-link'])) {
                     $modified_data = array(
-                        'id' => $_POST['id'],
+                        'id' => $id,
                         'display_order' => $_POST['display-order'],
-                        'title' => $_POST['title'],
-                        'caption' => $_POST['caption'],
-                        'button_title' => $_POST['button-title'],
-                        'button_link' => $_POST['button-link']
+                        'title' => strip_tags($_POST['title']),
+                        'caption' => strip_tags($_POST['caption']),
+                        'button_title' => strip_tags($_POST['button-title']),
+                        'button_link' => strip_tags($_POST['button-link'])
                     );
                 }
                 else {
@@ -129,7 +129,7 @@ class BackEndController {
                     $upload_errors = $upload_data[0];
                     $image_name = $upload_data[1];
                     
-                    $modified_data['image'] = $image_name;
+                    $modified_data['image'] = strip_tags($image_name);
 
                     $edited_banner = new Banner($modified_data);
 
@@ -161,6 +161,7 @@ class BackEndController {
         $banner_manager->deleteBanner($id);
 
         header('Location:index.php?action=showBannersManagement&banner=delete');
+        exit;
     }
 
     public function showBooksSection() {
@@ -181,7 +182,7 @@ class BackEndController {
             $errors = [];
 
             if (isset($_POST['author'], $_POST['title'], $_POST['subtitle'], $_FILES['book-cover-image'])) {
-                if (!empty($_POST['author']) && !empty($_POST['title']) && !empty($_POST['subtitle']) && !empty($_FILES['book-cover-image']['name'])) {
+                if (!($_POST['author']>0) && !empty($_POST['title']) && !empty($_POST['subtitle']) && !empty($_FILES['book-cover-image']['name'])) {
                     $book_data = array(
                         'author_id' => $_POST['author'],
                         'title' => $_POST['title'],
@@ -237,10 +238,10 @@ class BackEndController {
             if (isset($_POST['id'], $_POST['author'], $_POST['title'], $_POST['subtitle'], $_FILES['book-cover-image'])) {
                 if (!empty($_POST['id']) && !empty($_POST['author']) && !empty($_POST['title']) && !empty($_POST['subtitle'])) {
                     $modified_data = array(
-                        'id' => $_POST['id'],
-                        'author_id' => $_POST['author'],
-                        'title' => $_POST['title'],
-                        'subtitle' => $_POST['subtitle']
+                        'id' => $id,
+                        'author_id' => strip_tags($_POST['author']),
+                        'title' => strip_tags($_POST['title']),
+                        'subtitle' => strip_tags($_POST['subtitle'])
                     );
                 }
                 else {
@@ -258,7 +259,7 @@ class BackEndController {
                     $upload_errors = $upload_data[0];
                     $image_name = $upload_data[1];
                     
-                    $modified_data['book_cover_image'] = $image_name;
+                    $modified_data['book_cover_image'] = strip_tags($image_name);
 
                     $edited_book = new Book($modified_data);
 
@@ -316,7 +317,7 @@ class BackEndController {
                 if (!empty($_POST['title']) && !empty($_POST['content']) && !empty($_FILES['chapter-image']['name'])) {
                     $chapter_data = array(
                         'book_id' => $book_id,
-                        'title' => $_POST['title'],
+                        'title' => strip_tags($_POST['title']),
                         'content' => $_POST['content']
                     );
 
@@ -331,7 +332,7 @@ class BackEndController {
                         
                             $image_name = $upload_data[1];
 
-                            $chapter_data['image'] = $image_name;
+                            $chapter_data['image'] = strip_tags($image_name);
 
                             $new_chapter = new Chapter($chapter_data);
 
@@ -341,6 +342,7 @@ class BackEndController {
                                 $errors[] = 'upload_problem';
                             } else {
                                 header('Location:index.php?action=showChaptersManagement&bookId='.$book_id.'&chapter=creation');
+                                exit;
                             }
                         }
                     } else {
@@ -367,7 +369,7 @@ class BackEndController {
                 if (!empty($_POST['title']) && !empty($_POST['content'])) {
                     $modified_data = array(
                         'id' => $chapter_id,
-                        'title' => $_POST['title'],
+                        'title' => strip_tags($_POST['title']),
                         'content' => $_POST['content']
                     );
                 }
@@ -386,7 +388,7 @@ class BackEndController {
                     $upload_errors = $upload_data[0];
                     $image_name = $upload_data[1];
                     
-                    $modified_data['image'] = $image_name;
+                    $modified_data['image'] = strip_tags($image_name);
 
                     $edited_chapter = new Chapter($modified_data);
 
