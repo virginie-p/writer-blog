@@ -1,5 +1,6 @@
 <?php
 namespace App\model;
+use App\entity\User;
 use \PDO;
 
 class UserManager extends Manager {
@@ -18,7 +19,7 @@ class UserManager extends Manager {
 
     public function getAdmins() {
         $db = $this->MySQLConnect();
-        $req = $db->query('SELECT id, username, password, firstname, lastname, profile_picture, DATE_FORMAT(birthdate, \'%d/%m/%Y à %Hh%imin%ss\') AS birthdate, description, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date
+        $req = $db->query('SELECT id, username, password, firstname, lastname, profile_picture, DATE_FORMAT(birthdate, \'%d/%m/%Y à %Hh%imin%ss\') AS birthdate, description, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%i\') AS creation_date
         FROM projet_4_users WHERE user_type = 2');
 
         $req->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'App\entity\User');
@@ -30,19 +31,32 @@ class UserManager extends Manager {
 
     public function getMembers() {
         $db = $this->MySQLConnect();
-        $req = $db->query('SELECT username, password, firstname, lastname, profile_picture, DATE_FORMAT(birthdate, \'%d/%m/%Y à %Hh%imin%ss\') AS birthdate, description, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date
+        $req = $db->query('SELECT id, username, password, firstname, lastname, email, profile_picture, DATE_FORMAT(birthdate, \'%d/%m/%Y à %Hh%imin%ss\') AS birthdate, description, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%i\') AS creation_date
         FROM projet_4_users WHERE user_type = 3');
 
         $req->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'App\entity\User');
 
-        $member = $req->fetchAll();
+        $members = $req->fetchAll();
 
         return $members;
     }
 
+    public function getMember($id) {
+        $db = $this->MySQLConnect();
+        $req = $db->prepare('SELECT id, username, password, firstname, lastname, email, profile_picture, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%i\') AS creation_date
+        FROM projet_4_users WHERE id = ?');
+        $req->execute(array($id));
+
+        $req->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'App\entity\User');
+
+        $user = $req->fetch();
+
+        return $user;
+    }
+
     public function getUser($username) {
         $db = $this->MySQLConnect();
-        $req = $db->prepare('SELECT username, password, firstname, lastname,user_type, profile_picture, DATE_FORMAT(birthdate, \'%d/%m/%Y à %Hh%imin%ss\') AS birthdate, description, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%imin%ss\') AS creation_date
+        $req = $db->prepare('SELECT username, password, firstname, lastname,user_type, profile_picture, DATE_FORMAT(birthdate, \'%d/%m/%Y à %Hh%imin\') AS birthdate, description, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%i\') AS creation_date
         FROM projet_4_users WHERE username = ?');
         $req->execute(array($username));
 
@@ -55,20 +69,77 @@ class UserManager extends Manager {
 
     public function createUser(User $user) {
         $db = $this->MySQLConnect();
-        $req = $db->prepare('INSERT INTO projet_4_users(username, password, firstname, lastname, user_type, profile_picture, birthdate, description, creation_date) 
-        VALUES (:username, :password, :firstname, :lastname, :user_type, :profile_picture, :birthdate, :description, NOW())');
 
-        $affected_lines = $req->execute(array(
-            'username' => $user->username(),
-            'password' => $user->password(),
-            'firstname' => $user->firstname(),
-            'lastname' => $user->lastname(),
-            'user_type' => $user->userType(),
-            'profile_picture' => $user->profilePicture(),
-            'birthdate' => $user->birthdate(),
-            'description' => $user->description()
-        ));
-
+        if ($user->userType() == 3) {
+            $req = $db->prepare('INSERT INTO projet_4_users(
+                username, 
+                password, 
+                email, 
+                firstname,
+                lastname,
+                user_type,
+                profile_picture,
+                creation_date
+            ) 
+            VALUES (
+                :username, 
+                :password, 
+                :email, 
+                :firstname, 
+                :lastname, 
+                :user_type, 
+                :profile_picture,
+                NOW()
+            )');
+    
+            $affected_lines = $req->execute(array(
+                'username' => $user->username(),
+                'password' => $user->password(),
+                'email' => $user->email(),
+                'firstname' => $user->firstname(),
+                'lastname' => $user->lastname(),
+                'user_type' => $user->userType(),
+                'profile_picture' => $user->profilePicture(),
+            ));
+    
+        }
+        elseif ($user->userType() == 2) {
+            $req = $db->prepare('INSERT INTO projet_4_users(
+                username, 
+                password,
+                email,
+                firstname, 
+                lastname, 
+                user_type, 
+                profile_picture, 
+                birthdate, 
+                description, 
+                creation_date
+            ) 
+            VALUES (
+                :username, 
+                :password,
+                :email, 
+                :firstname, 
+                :lastname, 
+                :user_type, 
+                :profile_picture, 
+                :birthdate, 
+                :description, 
+                NOW())');
+    
+            $affected_lines = $req->execute(array(
+                'username' => $user->username(),
+                'password' => $user->password(),
+                'email' => $user->email(),
+                'firstname' => $user->firstname(),
+                'lastname' => $user->lastname(),
+                'user_type' => $user->userType(),
+                'profile_picture' => $user->profilePicture(),
+                'birthdate' => $user->birthdate(),
+                'description' => $user->description()
+            ));
+        }
         return $affected_lines;
     }
 
@@ -91,7 +162,7 @@ class UserManager extends Manager {
 
     public function deleteUser($user_id) {
         $db = $this->MySQLConnect();
-        $req = $db->prepare('DELETE * FROM projet_4_users WHERE id = ?');
+        $req = $db->prepare('DELETE FROM projet_4_users WHERE id = ?');
         
         $affectedLines = $req->execute(array($user_id));
 

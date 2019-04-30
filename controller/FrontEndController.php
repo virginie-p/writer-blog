@@ -2,11 +2,15 @@
 namespace App\controller;
 
 use App\model\BannerManager;
+use App\model\UserManager;
 use App\model\BookManager;
 use App\model\ChapterManager;
-use App\model\UserManager;
+use App\entity\User;
+use App\entity\Banner;
+use App\entity\Book;
+use App\entity\Chapter;
 
-class FrontEndController {
+class FrontEndController extends Controller {
     public function showHomepageFront() {
         $banner_manager = new BannerManager();
         $banners = $banner_manager->getBanners();
@@ -71,32 +75,89 @@ class FrontEndController {
     }
 
     public function createUser() {
-        $user_manager = new UserManager(); 
-        
-        if (isset($_POST) && !empty($_POST)){
-            $errors = [];
+        $user_data = [];
+        $errors = [];
 
-            if (isset(
-                $_POST['subscribe-username'],
-                $_POST['subscribe-password'],
-                $_POST['password-confirmation'],
-                $_POST['email'],
-                $_POST['lastname'],
-                $_POST['firstname'],
-                $_FILES['profile-picture']
-            )) {
-                if (!empty($_POST['subscribe-username']) 
-                && !empty($_POST['subscribe-password']) 
-                && !empty($_POST['password-confirmation']) 
-                && !empty($_POST['email']) 
-                && !empty($_POST['lastname']) 
-                && !empty($_POST['firstname']) 
-                && !empty($_FILES['profile-picture']['name'])) {
-                    
+        if (!empty($_POST['subscribe-username']) && !empty($_POST['subscribe-password']) && !empty($_POST['password-confirmation']) 
+            && !empty($_POST['email']) && !empty($_POST['lastname']) && !empty($_POST['firstname']) && !empty($_FILES['profile-picture']['name'])) {
+            $user_manager = new UserManager();
+            $users = $user_manager->getMembers();
+
+            foreach($users as $user) {
+                if ($user->username() == $_POST['subscribe-username']) {
+                    $errors[] = 'username_already_used';
+                }
+            }
+
+            if (!preg_match('#[0-9A-Za-z.-]{6,}#', $_POST['subscribe-username'])){
+                $errors[] = 'username_not_matching_regex' ;
+            }
+
+            if ($_POST['subscribe-password'] != $_POST['password-confirmation']) {
+                $errors[] = 'passwords_not_identical' ;
+            }
+
+            if (!preg_match('#^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{7,})\S$#', $_POST['subscribe-password'])) {
+                $errors[] = 'password_not_matching_regex';
+            }
+
+            if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+                $errors[] = 'email_invalid';
+            }
+
+            $user_data = array(
+                'user_type' => 3,
+                'username' => $_POST['subscribe-username'],
+                'password' => password_hash($_POST['subscribe-password'], PASSWORD_DEFAULT),
+                'email' => $_POST['email'],
+                'lastname' => $_POST['lastname'],
+                'firstname' =>$_POST['firstname']
+            );
+
+            $image_input_name = 'profile-picture';
+                        
+            if($_FILES[$image_input_name]['error'] != 0) {
+                $errors[] = 'image_or_size_invalid';
+            }
+
+            if (empty($errors)) { 
+                $upload_data = $this->createImageInFolder($image_input_name, 150, 150, 'profile_pictures');
+
+                $upload_errors = $upload_data[0];
+
+                if (!empty($upload_data[1])) {
+                
+                    $image_name = $upload_data[1];
+
+                    $user_data['profile_picture'] = $image_name;
+
+                    $new_user = new User($user_data);
+                    $affected_lines = $user_manager->createUser($new_user);
+
+                    if (!$affected_lines) {
+                        $errors[] = 'upload_problem';
+                    } else {
+                        echo json_encode([
+                            'status' => 'success'
+                        ]);
+                    }
                 }
             }
         }
+        else {
+            $errors[] = 'missing_fields';
+        }
 
+        if (!empty($errors)) {
+            $data['status'] = 'error';
+            $data['errors'] = $errors;
+            echo json_encode($data);
+        }
+        
+    }
+    public function postComment() {
+        $comment_manager = new CommentManager();
+        
     }
 
 }

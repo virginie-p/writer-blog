@@ -13,14 +13,15 @@
                     </button>
                 </div>
             <div class="modal-body">
-                <form action="index.php?action=subscribe" method="post" id="subscribe">
+                <div class="messages"></div>
+                <form action="index.php?action=subscribe" method="post" id="subscribe-form">
                     <div class="form-group">
                         <label for="username">Pseudo</label>
-                        <input type="text" class="form-control" name="subscribe-username">
+                        <input type="text" class="form-control" name="subscribe-username" value="<?php if (isset($_POST['subscribe-username'])) { echo $_POST['subscribe-username']; }?>">
                     </div>
                     <div class="form-group">
                         <label for="subscribe-password">Mot de passe</label>
-                        <input type="password" class="form-control" name="subscribe-password" aria-describedby="passwordHelp">
+                        <input type="password" class="form-control" name="subscribe-password" aria-describedby="passwordHelp" >
                         <small id="passwordHelp" class="form-text text-muted">Votre mot de passe doit être composé de 8 caractères dont à minima un chiffre et une lettre majuscule.</small>
                     </div>
                     <div class="form-group">
@@ -29,15 +30,15 @@
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" class="form-control" name="email">
+                        <input type="email" class="form-control" name="email" value="<?php if (isset($_POST['email'])) { echo $_POST['email']; } ?>">
                     </div>
                     <div class="form-group">
                         <label for="lastname">Nom</label>
-                        <input type="text" class="form-control" name="lastname">
+                        <input type="text" class="form-control" name="lastname" value="<?php if (isset($_POST['lastname'])) { echo $_POST['lastname']; } ?>">
                     </div>
                     <div class="form-group">
                         <label for="firstname">Prénom</label>
-                        <input type="text" class="form-control" name="firstname">
+                        <input type="text" class="form-control" name="firstname" value="<?php if (isset($_POST['firstname'])) { echo $_POST['firstname']; } ?>">
                     </div>
                     <div class="form-group">
                         <label for="profile-picture">Sélectionner votre photo de profil</label>
@@ -47,7 +48,7 @@
             </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                    <button type="submit" class="btn btn-primary" form="susbscribe">S'inscrire</button>
+                    <button type="submit" id="subscribe-button" class="btn btn-primary" form="subscribe-form">S'inscrire</button>
                 </div>
             </div>
         </div>
@@ -85,6 +86,17 @@
 <?php $disconnected_menu = ob_get_clean(); ?>
 
 <?php ob_start(); ?>
-
-
+<div class="collapse navbar-collapse" id="">
+    <ul class="navbar-nav ml-auto mt-2 mt-lg-0 align-items-center">
+        <li class="nav-item m-2 ">
+            <a class="nav-link" href="index.php?action=disconnection">Me déconnecter</a>
+        </li>
+        <li class="nav-item m-2">
+            <p class="navbar-text">Bonjour <?php if(isset($_SESSION['user'])){ echo $_SESSION['user']->firstname(); } ?> !<p>
+        </li>
+        <li class="nav-item">
+            <img class="profile-picture border" src="public\images\profile_pictures\<?php if(isset($_SESSION['user'])){ echo $_SESSION['user']->profilePicture(); } ?>" alt="">
+        </li>
+    </ul>
+</div>
 <?php $connected_menu = ob_get_clean(); ?>

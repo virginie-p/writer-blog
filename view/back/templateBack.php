@@ -30,7 +30,7 @@
             <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
                 <ul class="navbar-nav ml-auto mt-2 mt-lg-0 align-items-center">
                     <li class="nav-item m-2">
-                        <a href="index?action=disconnection">Me déconnecter</a>
+                        <a href="index.php?action=disconnection">Me déconnecter</a>
                     </li>
                     <li class="nav-item m-2">
                         <p> Bonjour <?= $_SESSION['user']->firstname() ?> !<p>
@@ -51,7 +51,7 @@
                 <nav class="row align-content-around text-center">
                     <a class="col-12" href="index.php?action=showBannersManagement">Bannières</a><br/>
                     <a class="col-12" href="index.php?action=showBooksManagement">Livres</a><br/>
-                    <a class="col-12" href="">Utilisateurs</a><br/>
+                    <a class="col-12" href="index.php?action=showUsersManagement">Utilisateurs</a><br/>
                 </nav>
             </section>
             <section class="content col-md-10 container-fluid">

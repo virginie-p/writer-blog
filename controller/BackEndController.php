@@ -8,30 +8,11 @@ use App\model\ChapterManager;
 use App\entity\Banner;
 use App\entity\Book;
 use App\entity\Chapter;
-use App\entity\Image;
 
-class BackEndController {
+class BackEndController extends Controller {
 
     public function showHomepageBack() {
         require(__DIR__.'/../view/back/homepageView.php');
-    }
-
-    public function createImageInFolder($image_input_name, $width, $height, $folder) {
-        $image = new Image($image_input_name);
-
-        $upload_errors = [];
-        $image_name = '';
-
-        if ($image->isExtAllowed()) {
-            $upload_errors[] = 'invalid_extension';
-        }
-
-        if (empty($upload_errors)) {
-            $image->resizeAndCompress($image_input_name, $width, $height);
-            $image_name = $image->upload($folder);
-        }
-
-        return array($upload_errors, $image_name);
     }
 
     public function showBannersSection() {
@@ -210,6 +191,7 @@ class BackEndController {
                                 $errors[] = 'upload_problem';
                             } else {
                                 header('Location:index.php?action=showBooksManagement&book=creation');
+                                exit;
                             }
                         }
                     } else {
@@ -420,5 +402,30 @@ class BackEndController {
         $chapter = $chapter_manager->getChapter($chapter_id);
 
         require(__DIR__.'/../view/back/editChapterView.php');
+    }
+
+    public function showUsersSection() {
+        $user_manager = new UserManager();
+        $users = $user_manager->getMembers();
+
+        require(__DIR__.'/../view/back/usersManagementView.php');
+    }
+
+    public function displayUser($id) {
+        $user_manager = new UserManager();
+        $user = $user_manager->getMember($id);
+
+        require(__DIR__.'/../view/back/displayUserView.php');
+    }
+
+    public function deleteUser($id) {
+        $user_manager = new UserManager();
+        $affected_lines = $user_manager->deleteUser($id);
+
+        if (empty($affected_lines)){
+            header('Location:index.php?action=showUsersManagement&user=delete');
+            exit;
+        }
+        
     }
 }

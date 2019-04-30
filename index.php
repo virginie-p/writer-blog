@@ -63,13 +63,41 @@ try {
                         $controller_back->editChapter($_GET['id']);
                     }
                 }
+                elseif ($_GET['action'] == 'showUsersManagement') {
+                    $controller_back->showUsersSection();
+                }
+                elseif ($_GET['action'] == 'displayUser') {
+                    if (isset($_GET['id']) && $_GET['id'] > 0) {
+                        $controller_back->displayUser($_GET['id']);
+                    }
+                }
+                elseif ($_GET['action'] == 'deleteUser') {
+                    if (isset($_GET['id']) && $_GET['id'] > 0) {
+                        $controller_back->deleteUser($_GET['id']);
+                    }
+                }
             }
             else {
                 $controller_back->showHomepageBack();
             }
+        }
+        else if ($_SESSION['user']->userType() == 3) {
+            if (isset($_GET['action'])){
+                if($_GET['action'] == 'disconnection') {
+                    $controller_front->disconnectUser();
+                }
+                elseif ($_GET['action'] == 'postComment') {
+                    $controller_front->postComment();
+                }
+                
+            }
+            else {
+                $controller_front->showHomepageFront();
+            }
         }       
     }
-    elseif (isset($_GET['action'])) {
+    
+    if (isset($_GET['action'])) {
         if ($_GET['action'] == 'connection') {
             $controller_front->connectUser();
         } 

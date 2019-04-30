@@ -75,5 +75,7 @@ main {
   main .add-action img {
     height: 50px;
     width: auto; }
+  main .user-info h5 {
+    color: #094872; }
 
 /*# sourceMappingURL=main.css.map */

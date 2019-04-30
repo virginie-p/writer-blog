@@ -9,14 +9,12 @@
               </button>
             </div>
         <div class="modal-body">
-            <form method="post" id="modal-form">
               <div class="form-check">
               </div>
-            </form>
         </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                <button type="submit" class="btn btn-danger" form="modal-form">Confirmer</button>
+                <a class="btn btn-danger active" role="button">Confirmer</a>
             </div>
         </div>
     </div>

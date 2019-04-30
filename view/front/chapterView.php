@@ -11,6 +11,8 @@
     <?=$chapter->content()?>
 </div>
 
+<?php require_once('commentsView.php') ?>
+
 
 <?php $content = ob_get_clean(); ?>
 

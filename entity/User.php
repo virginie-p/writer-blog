@@ -10,6 +10,7 @@ class User extends Entity
                 $id,
                 $username,
                 $password,
+                $email,
                 $firstname,
                 $lastname,
                 $user_type,
@@ -26,11 +27,15 @@ class User extends Entity
     }
 
     public function username() {
-        return $this->username;
+        return $this->username;     
     }
 
     public function password() {
         return $this->password;
+    }
+
+    public function email() {
+        return $this->email;
     }
 
     public function firstname()  {
@@ -91,6 +96,10 @@ class User extends Entity
         else {
             $this->password = $password;
         }
+    }
+
+    public function setEmail($email) {
+        $this->email = $email;
     }
 
     public function setFirstname($firstname){

@@ -43,14 +43,14 @@ class Modal {
     
     addSpecificities() {
         $('.modal').attr('id', this.action + 'Modal');
-        $('.modal-body>form').attr('action', ('index.php?action=' + this.action + capitalize(this.type) + '&id=' + this.id));
+        $('.modal-footer>a').attr('href', ('index.php?action=' + this.action + capitalize(this.type) + '&id=' + this.id));
         $('#modal-title').append(this.title);
         $('.form-check').append(this.message);
     }
 
     deleteSpecificities() {
         $('.modal').removeAttr('id');
-        $('.modal-body>form').removeAttr('action');
+        $('.modal-footer>a').removeAttr('href');
         $('#modal-title').empty();
         $('.form-check').empty();
     }
