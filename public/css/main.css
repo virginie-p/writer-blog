@@ -49,11 +49,22 @@ li.media {
   .jumbotron .lead {
     font-size: 2rem; }
 
+.comment-username {
+  font-weight: bold; }
+
+.comment-title {
+  font-weight: bold;
+  color: #0c6b88; }
+
+.comment-bubble {
+  border-radius: 6px; }
+
 .navbar-collapse p {
   margin: 0; }
 
 .profile-picture {
-  height: 60px; }
+  height: 60px;
+  border-radius: 3px; }
 
 .categories {
   height: 150px; }

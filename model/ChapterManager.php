@@ -53,7 +53,7 @@ class ChapterManager extends Manager {
 
         $chapters = $req->fetchAll();
 
-        return $chapters;    
+        return $chapters;
     }
 
     public function getChapter($chapter_id) {

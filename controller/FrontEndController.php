@@ -5,10 +5,12 @@ use App\model\BannerManager;
 use App\model\UserManager;
 use App\model\BookManager;
 use App\model\ChapterManager;
+use App\model\CommentManager;
 use App\entity\User;
 use App\entity\Banner;
 use App\entity\Book;
 use App\entity\Chapter;
+use App\entity\Comment;
 
 class FrontEndController extends Controller {
     public function showHomepageFront() {
@@ -64,12 +66,15 @@ class FrontEndController extends Controller {
         require(__DIR__.'/../view/front/chaptersView.php');
     }
 
-    public function showChapter($id) {
+    public function showChapter($id, $errors = NULL) {
         $chapter_manager = new ChapterManager();
         $chapter = $chapter_manager->getChapter($id);
 
         $book_manager = new BookManager();
         $book = $book_manager->getBook($chapter->bookId());
+
+        $comment_manager = new CommentManager();
+        $comments = $comment_manager->getComments($id);
 
         require(__DIR__.'/../view/front/chapterView.php');
     }
@@ -155,9 +160,44 @@ class FrontEndController extends Controller {
         }
         
     }
-    public function postComment() {
-        $comment_manager = new CommentManager();
-        
+    public function postComment($chapter_id) {
+        $comment_data = [];
+        $errors = [];
+
+        $chapter_manager = new ChapterManager();
+        $chapter = $chapter_manager->getChapter($chapter_id);
+
+        if(!$chapter) {
+            $errors[] = 'chapter_does_not_exists';
+        }
+
+        if (!empty($_POST['comment-title']) && !empty($_POST['comment'])){
+            
+            $comment_data = array(
+                'title' => htmlspecialchars($_POST['comment-title']),
+                'content' => $_POST['comment'],
+                'chapter_id' => $chapter_id,
+                'user_id' => $_SESSION['user']->id()
+            );
+
+            if (empty($errors)) {
+                $comment_manager = new CommentManager();
+                $comment = new Comment($comment_data);
+                $affected_lines = $comment_manager->createComment($comment);
+    
+                if (!$affected_lines) {
+                    $errors[] = 'upload_problem';
+                } else {
+                    header('Location: index.php?action=showChapter&id='. $chapter_id . $_SERVER['HTML_REFERER'] . '&comment=create');
+                    exit;
+                }
+            }         
+        }
+        else {
+            $errors[] = 'missing_fields';
+        }
+
+        $this->showChapter($chapter_id, $errors);
     }
 
 }

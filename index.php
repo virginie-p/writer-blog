@@ -87,7 +87,9 @@ try {
                     $controller_front->disconnectUser();
                 }
                 elseif ($_GET['action'] == 'postComment') {
-                    $controller_front->postComment();
+                    if (isset($_GET['chapterId']) && $_GET['chapterId'] > 0) {
+                        $controller_front->postComment($_GET['chapterId']);
+                    }
                 }
                 
             }

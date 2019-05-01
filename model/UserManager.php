@@ -56,7 +56,7 @@ class UserManager extends Manager {
 
     public function getUser($username) {
         $db = $this->MySQLConnect();
-        $req = $db->prepare('SELECT username, password, firstname, lastname,user_type, profile_picture, DATE_FORMAT(birthdate, \'%d/%m/%Y à %Hh%imin\') AS birthdate, description, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%i\') AS creation_date
+        $req = $db->prepare('SELECT id, username, password, firstname, lastname,user_type, profile_picture, DATE_FORMAT(birthdate, \'%d/%m/%Y à %Hh%imin\') AS birthdate, description, DATE_FORMAT(creation_date, \'%d/%m/%Y à %Hh%i\') AS creation_date
         FROM projet_4_users WHERE username = ?');
         $req->execute(array($username));
 
