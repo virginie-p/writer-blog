@@ -3,7 +3,7 @@
 <h3 class="book-chapter-category row justify-content-center mx-0 mb-5">Chapitres</h3>
 <ul class="list-unstyled">
  <?php foreach($chapters as $chapter) { ?>
-    <li class="media mb-3 bg-light">
+  <li class="media mb-3 row bg-light">
     <img src="public/images/chapters_images/<?=$chapter->image()?>" class="chapters-images mr-3" alt="Image du chapitre intitulé <?=$chapter->title()?>">
     <div class="media-body">
       <h5 class="mt-1 mb-1"><?=$chapter->title()?></h5>

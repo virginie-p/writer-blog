@@ -65,6 +65,7 @@
                     </button>
                 </div>
             <div class="modal-body">
+            <div class="messages"></div>
                 <form action="index.php?action=connection" method="post" id="connexion-form">
                     <div class="form-group">
                         <label for="username">Pseudo</label>
@@ -78,7 +79,7 @@
             </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                    <button type="submit" class="btn btn-primary" form="connexion-form">Se connecter</button>
+                    <button type="submit" class="btn btn-primary" form="connexion-form" id="connect-button">Se connecter</button>
                 </div>
             </div>
         </div>
@@ -86,7 +87,7 @@
 <?php $disconnected_menu = ob_get_clean(); ?>
 
 <?php ob_start(); ?>
-<div class="collapse navbar-collapse" id="">
+<div>
     <ul class="navbar-nav ml-auto mt-2 mt-lg-0 align-items-center">
         <li class="nav-item m-2 ">
             <a class="nav-link" href="index.php?action=disconnection">Me déconnecter</a>

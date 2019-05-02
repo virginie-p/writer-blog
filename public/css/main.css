@@ -29,8 +29,7 @@ footer {
   width: auto; }
 
 #content {
-  margin-left: 200px;
-  margin-right: 200px; }
+  width: 80%; }
 
 .book-chapter-category {
   color: #505050; }
@@ -59,6 +58,10 @@ li.media {
 .comment-bubble {
   border-radius: 6px; }
 
+.report-disabled {
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%); }
+
 .navbar-collapse p {
   margin: 0; }
 
@@ -86,7 +89,19 @@ main {
   main .add-action img {
     height: 50px;
     width: auto; }
-  main .user-info h5 {
+  main .user-info h5, main .comment-info h5 {
     color: #094872; }
+
+@media all and (max-width: 750px) {
+  #content {
+    width: 100%; }
+
+  .media.row {
+    margin-left: 10px;
+    margin-right: 10px; }
+    .media.row img {
+      border-top-right-radius: 6px;
+      width: 100%;
+      margin-right: 0; } }
 
 /*# sourceMappingURL=main.css.map */

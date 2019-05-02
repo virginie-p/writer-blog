@@ -1,6 +1,6 @@
 <?php if(isset($_SESSION['user'])) { ?>
     <hr>
-    <form enctype="multipart/form-data" class="container p-4 bg-light" method="post" action="index.php?action=postComment&chapterId=<?=$chapter->id()?>" id="post-comment">
+    <form enctype="multipart/form-data" class="container p-4 mx-auto bg-light" method="post" action="index.php?action=postComment&chapterId=<?=$chapter->id()?>" id="post-comment">
         <h5>Rédiger un nouveau commentaire</h5>
         <div class="messages">
             <?php if(isset($_GET['comment']) && $_GET['comment'] == 'create') { ?> 
@@ -27,9 +27,10 @@
     </form>
 <?php } ?>
 
-<div class="container comment-zone p-4 bg-light">
+<div class="container comment-zone p-4 mx-auto bg-light">
 <h5>Commentaires</h5>
- <?php if (empty($comments)) { ?>
+<div id="report-message"></div>
+<?php if (empty($comments)) { ?>
     <div class="alert alert-light" role="alert">Aucun commentaire n'a encore été posté sur ce chapitre !</div>
 <?php   }
         else {
@@ -40,9 +41,19 @@
                         <div class="row">
                             <p class="comment-username mt-0 mx-2"><?=$comment->username?></p>
                             <span class="font-weight-lighter font-italic">le <?=$comment->creationDate()?></span>
+                            <?php if (isset($_SESSION['user'])) {?>
+                            <a class="comment-report ml-lg-auto mt-n3" 
+                            <?php if ($comment->moderationStatus() == 0) {?> href="index.php?action=reportComment&id=<?=$comment->id()?>" <?php } ?> >
+                                <img class="report-image <?php if ($comment->moderationStatus() == 1) {?>report-disabled<?php } ?>"
+                                src="https://img.icons8.com/color/48/000000/error.png"
+                                <?php if ($comment->moderationStatus() == 1) {?> title="Ce commentaire est en cours de modération" <?php } ?>>
+                            </a>
+                            <?php } ?>
                         </div>
-                        <p class="comment-title mb-1"><?=$comment->title()?></p>
-                        <p class="mb-0"><?=$comment->content()?></p>
+                        <div class="row">
+                            <p class="comment-title p-0 col-12 mt-0 mx-2 mb-1"><?=$comment->title()?></p>
+                            <p class="col-12 p-0 mt-0 mx-2 mb-0"><?=$comment->content()?></p>
+                        </div>
                     </div>
                 </div>
     <?php    }

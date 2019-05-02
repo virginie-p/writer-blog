@@ -4,7 +4,7 @@
     <h2 class="row justify-content-center mx-0 mt-4 mb-5">Les livres disponibles</h2>
     <div class="row mx-0 justify-content-center">
     <?php foreach($books as $book) { ?>
-        <div class="col-3 text-center">
+        <div class="col-lg-3 col-md-12 text-center">
             <a href="index.php?action=showBookChapters&id=<?=$book->id()?>">
                 <img class="books-covers mb-2" src="public/images/books_covers/<?=$book->bookCoverImage()?>" class="mr-3" alt="Couverture du livre <?=$book->title()?>">
                 <div>

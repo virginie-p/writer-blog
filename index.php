@@ -76,6 +76,15 @@ try {
                         $controller_back->deleteUser($_GET['id']);
                     }
                 }
+                elseif ($_GET['action'] == 'showCommentsManagement') {
+                    $controller_back->showComments();
+                }
+                elseif ($_GET['action'] == 'displayComment') {
+                    $controller_back->displayComment();
+                }
+                elseif ($_GET['action'] == 'deleteComment') {
+                    $controller_back->deleteComment();
+                }
             }
             else {
                 $controller_back->showHomepageBack();
@@ -86,10 +95,26 @@ try {
                 if($_GET['action'] == 'disconnection') {
                     $controller_front->disconnectUser();
                 }
+                elseif ($_GET['action'] == 'showBooksList') {
+                    $controller_front->showBooksList();
+                }
+                elseif ($_GET['action'] == 'showBookChapters') {
+                    if (isset($_GET['id']) && $_GET['id'] > 0) {
+                        $controller_front->showBookChapters($_GET['id']);
+                    }
+                }
+                elseif ($_GET['action'] == 'showChapter') {
+                    if (isset($_GET['id']) && $_GET['id'] > 0) {
+                        $controller_front->showChapter($_GET['id']);
+                    }
+                }
                 elseif ($_GET['action'] == 'postComment') {
                     if (isset($_GET['chapterId']) && $_GET['chapterId'] > 0) {
                         $controller_front->postComment($_GET['chapterId']);
                     }
+                }
+                elseif ($_GET['action'] == 'reportComment') {
+                    $controller_front->reportComment();
                 }
                 
             }
@@ -99,7 +124,7 @@ try {
         }       
     }
     
-    if (isset($_GET['action'])) {
+    elseif (isset($_GET['action'])) {
         if ($_GET['action'] == 'connection') {
             $controller_front->connectUser();
         } 

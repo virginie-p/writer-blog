@@ -5,9 +5,11 @@ use App\model\BannerManager;
 use App\model\UserManager;
 use App\model\BookManager;
 use App\model\ChapterManager;
+use App\model\CommentManager;
 use App\entity\Banner;
 use App\entity\Book;
 use App\entity\Chapter;
+use App\entity\Comment;
 
 class BackEndController extends Controller {
 
@@ -427,5 +429,51 @@ class BackEndController extends Controller {
             exit;
         }
         
+    }
+
+    public function showComments() {
+        $comment_manager = new CommentManager();
+
+        if (isset($_GET['id']) && $_GET['id'] > 0) {
+            $comments = $comment_manager->getComments($_GET['id']);
+        }
+        else {
+            $comments = [];
+            $error = 'no_chapter_id';
+        }
+
+        require(__DIR__.'/../view/back/commentsManagementView.php');
+
+    }
+
+    public function displayComment() {
+        $comment_manager = new CommentManager();
+        if (isset($_GET['id']) && $_GET['id'] > 0) {
+            $comment = $comment_manager->getComment($_GET['id']);
+        }
+        else {
+            $comment = [];
+            $error = 'no_comment_id';
+        }
+
+        require(__DIR__.'/../view/back/displayCommentView.php');
+    }
+
+    public function deleteComment() {
+        $comment_manager = new CommentManager();
+
+        if (isset($_GET['id']) && $_GET['id'] > 0) {
+            $affected_lines = $comment_manager->deleteComment($_GET['id']);
+            
+            if ($affected_lines == true){
+                header('Location:index.php?action=showCommentsManagement&comment=delete');
+                exit;
+            }
+        }
+        else {
+            header('Location:index.php?action=showCommentsManagement&comment=delete-error');
+            exit;
+        }
+
     }
 }

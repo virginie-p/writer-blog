@@ -15,8 +15,7 @@
 }
 
 #content{
-    margin-left: 200px;
-    margin-right: 200px;
+width: 80%;
 }
 
 .book-chapter-category {
@@ -53,4 +52,9 @@ li.media {
 
 .comment-bubble {
     border-radius: 6px;
+}
+
+.report-disabled {
+    -webkit-filter:grayscale(100%);
+    filter: grayscale(100%);
 }

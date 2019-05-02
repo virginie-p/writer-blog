@@ -29,15 +29,20 @@ class FrontEndController extends Controller {
 
         if ($user != false) {
             if (!password_verify($_POST['password'], $user->password())){
-                throw new \Exception('Aucun couple utilisateur/mot de passe connu sur le serveur');
+                echo json_encode([
+                    'status' => 'error'
+                ]);
             }
             else {
                 $_SESSION['user'] = $user;
-                header('Location: index.php');
-                exit;
+                echo json_encode([
+                    'status' => 'success'
+                ]);
             }
         } else {
-            throw new \Exception('Aucun couple utilisateur/mot de passe connu sur le serveur');
+            echo json_encode([
+                'status' => 'error'
+            ]);
         }
 
     }
@@ -164,13 +169,6 @@ class FrontEndController extends Controller {
         $comment_data = [];
         $errors = [];
 
-        $chapter_manager = new ChapterManager();
-        $chapter = $chapter_manager->getChapter($chapter_id);
-
-        if(!$chapter) {
-            $errors[] = 'chapter_does_not_exists';
-        }
-
         if (!empty($_POST['comment-title']) && !empty($_POST['comment'])){
             
             $comment_data = array(
@@ -188,7 +186,7 @@ class FrontEndController extends Controller {
                 if (!$affected_lines) {
                     $errors[] = 'upload_problem';
                 } else {
-                    header('Location: index.php?action=showChapter&id='. $chapter_id . $_SERVER['HTML_REFERER'] . '&comment=create');
+                    header('Location: index.php?action=showChapter&id='. $chapter_id . '&comment=create');
                     exit;
                 }
             }         
@@ -198,6 +196,31 @@ class FrontEndController extends Controller {
         }
 
         $this->showChapter($chapter_id, $errors);
+    }
+
+    public function reportComment() {
+       $comment_manager = new CommentManager();
+    
+        if(isset($_GET['id']) && $_GET['id']>0) {
+            $affected_line = $comment_manager->changeReportStatus(1, $_GET['id']);
+            if(!$affected_line) {
+                echo json_encode([
+                    'status' => 'error',
+                    'error' => 'report_did_not_work'
+                ]);
+            }
+            else {
+                echo json_encode([
+                    'status' => 'success'
+                ]);
+            }
+        }
+        else {
+            echo json_encode([
+                'status' => 'error',
+                'error' => 'id_does_not_exist'
+            ]);
+        }
     }
 
 }

@@ -48,7 +48,7 @@ $(function() {
             }
             else if (data.status === 'success') {
                 $('.messages').prepend('<div class="alert alert-success" role="alert">Votre compte a bien été créé.</div>');
-                $('#subscribe-form>input').empty();
+                $('#subscribe-form').find('input').val('');
             }
         });
     });

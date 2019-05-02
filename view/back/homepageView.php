@@ -1,5 +1,4 @@
-<?php ob_start(); ?>
-   
+<?php ob_start(); ?>   
         <div class=" categories row justify-content-around mt-3 ">
             <a href="index.php?action=showBannersManagement" class="banners col-md-3 border text-center">
                 <img src="https://img.icons8.com/clouds/100/000000/picture.png">
@@ -14,7 +13,6 @@
                 <h2>Utilisateurs</h2>
             </a>
         </div>
-
 <?php $content = ob_get_clean(); ?>
 
 <?php 

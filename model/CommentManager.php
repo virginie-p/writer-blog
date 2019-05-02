@@ -84,6 +84,18 @@ class CommentManager extends Manager {
         return $affected_lines;
     }
 
+    public function changeReportStatus($moderation_status, $id) {
+        $db = $this->MySQLConnect();
+        $req = $db->prepare('UPDATE projet_4_comments SET moderation_status = :moderation_status WHERE id = :id');
+
+        $affected_line = $req->execute(array(
+            'moderation_status' => $moderation_status,
+            'id' => $id
+        ));
+        
+        return $affected_line;
+    }
+
     public function deleteComment($comment_id) {
         $db = $this->MySQLConnect();
         $req = $db->prepare('DELETE FROM projet_4_comments WHERE id = ?');

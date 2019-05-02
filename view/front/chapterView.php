@@ -1,6 +1,6 @@
 <?php ob_start(); ?>
 <div id="chapter-id" hidden><?=$chapter->id()?></div>
-<div style="background-image: url('public/images/chapters_images/<?=$chapter->image()?>'); background-size: 100%;">
+<div style="background-image: url('public/images/chapters_images/<?=$chapter->image()?>'); background-size: cover;">
     <div class="jumbotron jumbotron-fluid">
         <div class="container chapter-title">
             <h1 class="display-4"><?=$book->title()?></h1>
@@ -8,7 +8,7 @@
         </div>
     </div>
 </div>
-<div>
+<div class="container">
     <?=$chapter->content()?>
 </div>
 

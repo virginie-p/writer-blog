@@ -1,5 +1,5 @@
 <?php ob_start(); ?>
-<div id="slider" class="carousel slide container" data-ride="carousel">
+<div id="slider" class="carousel slide container p-0" data-ride="carousel">
   <ol class="carousel-indicators">
     <?php 
       for($i=0; count($banners) > $i; $i++) 
@@ -31,8 +31,8 @@
     <span class="sr-only">Next</span>
   </a>
 </div>
-<div id="latest-chapters" class="container-fluid">
-  <h2 class="row justify-content-center mt-4">Les derniers chapitres postés</h2>
+<div id="latest-chapters" class="container">
+  <h2 class="row justify-content-center text-center mt-4">Les derniers chapitres postés</h2>
   <div class="row justify-content-center">
     <?php foreach($latest_chapters as $latest_chapter) { ?>
       <div class="card m-3" style="width: 20rem; height:20rem">
@@ -41,7 +41,7 @@
           <h4><?=$latest_chapter->book_title?></h4>
           <h5 class="card-title"><?=$latest_chapter->title()?></h5>
           <p class="card-text"><?=strip_tags(substr($latest_chapter->content(), 0, 200)); ?></p>
-          <a href="#" class="btn btn-primary">Lire la suite</a>
+          <a href="index.php?action=showChapter&id=<?=$latest_chapter->id()?>" class="btn btn-primary">Lire la suite</a>
         </div>
       </div>
     <?php } ?>
