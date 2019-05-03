@@ -11,6 +11,8 @@ use App\entity\Book;
 use App\entity\Chapter;
 use App\entity\Comment;
 
+require_once(__DIR__.'/../config.php');
+
 class BackEndController extends Controller {
 
     public function showHomepageBack() {
@@ -45,7 +47,7 @@ class BackEndController extends Controller {
                     $image_input_name = 'banner-image';
                               
                     if($_FILES[$image_input_name]['error'] == 0) {
-                        $upload_data = $this->createImageInFolder($image_input_name, 1250, 680, 'banners');
+                        $upload_data = $this->createImageInFolder($image_input_name, $banner_with, $banner_height, $banner_folder);
 
                         $upload_errors = $upload_data[0];
 
@@ -107,7 +109,7 @@ class BackEndController extends Controller {
             if (!empty($_FILES[$image_input_name]['name'])) {
                               
                 if($_FILES[$image_input_name]['error'] == 0) {
-                    $upload_data = $this->createImageInFolder($image_input_name, 1250, 680, 'banners');
+                    $upload_data = $this->createImageInFolder($image_input_name, $banner_with, $banner_height, $banner_folder);
 
                     $upload_errors = $upload_data[0];
                     $image_name = $upload_data[1];
@@ -175,7 +177,7 @@ class BackEndController extends Controller {
                     $image_input_name = 'book-cover-image';
                               
                     if($_FILES[$image_input_name]['error'] == 0) {
-                        $upload_data = $this->createImageInFolder($image_input_name, 595, 842, 'books_covers');
+                        $upload_data = $this->createImageInFolder($image_input_name, $book_cover_width, $book_cover_height, $book_cover_folder);
 
                         $upload_errors = $upload_data[0];
 
@@ -238,7 +240,7 @@ class BackEndController extends Controller {
             if (!empty($_FILES[$image_input_name]['name'])) {
                               
                 if($_FILES[$image_input_name]['error'] == 0) {
-                    $upload_data = $this->createImageInFolder($image_input_name, 595, 842, 'books_covers');
+                    $upload_data = $this->createImageInFolder($image_input_name, $book_cover_width, $book_cover_height, $book_cover_folder);
 
                     $upload_errors = $upload_data[0];
                     $image_name = $upload_data[1];
@@ -308,7 +310,7 @@ class BackEndController extends Controller {
                     $image_input_name = 'chapter-image';
                               
                     if($_FILES[$image_input_name]['error'] == 0) {
-                        $upload_data = $this->createImageInFolder($image_input_name, 1250, 350, 'chapters_images');
+                        $upload_data = $this->createImageInFolder($image_input_name, $chapter_image_width, $chapter_image_height, $chapter_image_folder);
 
                         $upload_errors = $upload_data[0];
 

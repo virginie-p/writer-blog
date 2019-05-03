@@ -14,3 +14,8 @@ $banner_folder = 'banners';
 $book_cover_width= 595;
 $book_cover_height= 842;
 $book_cover_folder= 'books_covers';
+
+/*Chapter Image Specificities */
+$chapter_image_width = 1250;
+$chapter_image_height = 350;
+$chapter_image_folder = 'chapters_images';

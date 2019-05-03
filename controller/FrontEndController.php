@@ -12,6 +12,8 @@ use App\entity\Book;
 use App\entity\Chapter;
 use App\entity\Comment;
 
+require_once(__DIR__.'/../config.php');
+
 class FrontEndController extends Controller {
     public function showHomepageFront() {
         $banner_manager = new BannerManager();
@@ -131,7 +133,7 @@ class FrontEndController extends Controller {
             }
 
             if (empty($errors)) { 
-                $upload_data = $this->createImageInFolder($image_input_name, 150, 150, 'profile_pictures');
+                $upload_data = $this->createImageInFolder($image_input_name, $profile_picture_width, $profile_picture_height, $profile_picture_folder);
 
                 $upload_errors = $upload_data[0];
 
