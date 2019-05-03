@@ -84,13 +84,15 @@ main {
     main table td, main table th {
       vertical-align: middle !important; }
     main table img {
-      height: 50px;
+      height: 45px;
       width: auto; }
   main .add-action img {
     height: 50px;
     width: auto; }
   main .user-info h5, main .comment-info h5 {
     color: #094872; }
+  main table a:hover {
+    text-decoration: none; }
 
 @media all and (max-width: 750px) {
   #content {

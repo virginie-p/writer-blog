@@ -42,10 +42,10 @@
         <td><?= $chapter->creationDate() ?></td>
         <td><?= $chapter->modificationDate() ?></td>
         <td>
-          <a href="index.php?action=editChapter&amp;id=<?= $chapter->id() ?>">
+          <a href="index.php?action=editChapter&amp;id=<?= $chapter->id() ?>" class="m-1">
             <img src="https://img.icons8.com/plasticine/100/000000/edit.png">
           </a>
-          <a data-toggle="modal" id="chapter-<?=$chapter->id()?>" data-action="delete" href="#deleteModal">
+          <a data-toggle="modal" id="chapter-<?=$chapter->id()?>" data-action="delete" href="#deleteModal" class="m-1">
             <img src="https://img.icons8.com/plasticine/100/000000/delete.png">
           </a>
         </td>

@@ -10,7 +10,7 @@
                 <div class="alert alert-danger" role="alert">Un ou plusieurs champs ne sont pas renseignés, tous les champs doivent être renseignés afin de procéder à la création de la bannière.</div>
     <?php   } 
             if (in_array('image_or_size_invalid', $errors)) { ?>
-                <div class="alert alert-danger" role="alert">Votre image dépasse la taille maximum autorisée par le serveur (2Mo) ou vous n'avez pas sélectionné d'image</div>
+                <div class="alert alert-danger" role="alert">Votre image dépasse la taille maximum autorisée par le serveur (2Mo) ou vous n'avez pas sélectionné d'image.</div>
     <?php   }
         } ?>
 

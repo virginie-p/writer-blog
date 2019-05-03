@@ -44,9 +44,10 @@
                             <?php if (isset($_SESSION['user'])) {?>
                             <a class="comment-report ml-lg-auto mt-n3" 
                             <?php if ($comment->moderationStatus() == 0) {?> href="index.php?action=reportComment&id=<?=$comment->id()?>" <?php } ?> >
-                                <img class="report-image <?php if ($comment->moderationStatus() == 1) {?>report-disabled<?php } ?>"
-                                src="https://img.icons8.com/color/48/000000/error.png"
-                                <?php if ($comment->moderationStatus() == 1) {?> title="Ce commentaire est en cours de modération" <?php } ?>>
+                                <img class="report-image <?php if($comment->moderationStatus() == 2){ ?>m-2<?php } if ($comment->moderationStatus() == 1) {?>report-disabled<?php } ?>"
+                            src="<?php if($comment->moderationStatus() == 2){ ?> https://img.icons8.com/color/35/000000/ok.png <?php } else { ?> https://img.icons8.com/color/48/000000/error.png <?php } ?>"
+                                <?php if ($comment->moderationStatus() == 1) {?> title="Ce commentaire est en cours de modération" <?php } elseif($comment->moderationStatus() == 2){ ?> title="Ce commentaire a été validé par un modérateur" <?php } ?>>
+                            
                             </a>
                             <?php } ?>
                         </div>

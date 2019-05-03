@@ -39,11 +39,11 @@
         <td><?= $banner->title() ?></td>
         <td><?= $banner->creationDate() ?></td>
         <td><?= $banner->modificationDate() ?></td>
-        <td class="d-flex justify-content-center">
-          <a href="index.php?action=editBanner&amp;id=<?= $banner->id() ?>">
+        <td>
+          <a href="index.php?action=editBanner&amp;id=<?= $banner->id() ?>" class="m-1">
             <img src="https://img.icons8.com/plasticine/100/000000/edit.png">
           </a>
-          <a data-toggle="modal" id="banner-<?=$banner->id()?>" data-action="delete" href="#deleteModal">
+          <a data-toggle="modal" id="banner-<?=$banner->id()?>" data-action="delete" href="#deleteModal" class="m-1">
             <img src="https://img.icons8.com/plasticine/100/000000/delete.png">
           </a>
         </td>

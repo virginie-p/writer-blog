@@ -173,7 +173,7 @@ class FrontEndController extends Controller {
             
             $comment_data = array(
                 'title' => htmlspecialchars($_POST['comment-title']),
-                'content' => $_POST['comment'],
+                'content' => htmlspecialchars($_POST['comment']),
                 'chapter_id' => $chapter_id,
                 'user_id' => $_SESSION['user']->id()
             );
@@ -202,7 +202,7 @@ class FrontEndController extends Controller {
        $comment_manager = new CommentManager();
     
         if(isset($_GET['id']) && $_GET['id']>0) {
-            $affected_line = $comment_manager->changeReportStatus(1, $_GET['id']);
+            $affected_line = $comment_manager->changeModerationStatus(1, $_GET['id']);
             if(!$affected_line) {
                 echo json_encode([
                     'status' => 'error',
@@ -221,6 +221,10 @@ class FrontEndController extends Controller {
                 'error' => 'id_does_not_exist'
             ]);
         }
+    }
+
+    public function showError404() {
+        require(__DIR__.'/../view/front/error404View.php');
     }
 
 }

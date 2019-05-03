@@ -431,7 +431,7 @@ class BackEndController extends Controller {
         
     }
 
-    public function showComments() {
+    public function showComments($errors= NULL) {
         $comment_manager = new CommentManager();
 
         if (isset($_GET['id']) && $_GET['id'] > 0) {
@@ -473,6 +473,45 @@ class BackEndController extends Controller {
         else {
             header('Location:index.php?action=showCommentsManagement&comment=delete-error');
             exit;
+        }
+
+    }
+
+    public function validateComment() {
+        $comment_manager = new CommentManager();
+
+        if (isset($_GET['id']) && $_GET['id'] > 0) {
+            $comment = $comment_manager->getComment($_GET['id']);
+
+            if ($comment->moderationStatus() == 1) {
+                $affected_line = $comment_manager->changeModerationStatus(2, $_GET['id']);
+
+                if(!$affected_line) {
+                    echo json_encode([
+                        'status' => 'error',
+                        'error' => 'validation_did_not_work'
+                    ]);
+                }
+                else {
+                    echo json_encode([
+                        'status' => 'success'
+                    ]);
+                }
+
+            } 
+            else {
+                echo json_encode([
+                    'status' => 'error',
+                    'error' => 'comment_not_reported'
+                ]);
+            }
+            
+        }
+        else {
+            echo json_encode([
+                'status' => 'error',
+                'error' => 'no_comment_id'
+            ]);
         }
 
     }

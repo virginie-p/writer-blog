@@ -44,10 +44,10 @@
         <td><?= $book->creationDate() ?></td>
         <td><?= $book->modificationDate() ?></td>
         <td>
-          <a href="index.php?action=editBook&amp;id=<?= $book->id() ?>">
+          <a href="index.php?action=editBook&amp;id=<?= $book->id() ?>" class="m-1">
             <img src="https://img.icons8.com/plasticine/100/000000/edit.png">
           </a>
-          <a data-toggle="modal" id="book-<?=$book->id()?>" data-action="delete" href="#deleteModal">
+          <a data-toggle="modal" id="book-<?=$book->id()?>" data-action="delete" href="#deleteModal" class="m-1">
             <img src="https://img.icons8.com/plasticine/100/000000/delete.png">
           </a>
         </td>
