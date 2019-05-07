@@ -17,6 +17,11 @@
           elseif ($_GET['banner'] == 'creation') { ?>
             <div class="alert alert-success" role="alert">La nouvelle bannière a bien été ajoutée.</div>
     <?php } 
+        } 
+        elseif (isset($errors))  { 
+          if (in_array('no_banner_id', $errors)) { ?>
+            <div class="alert alert-danger" role="alert">Aucun numéro de bannière renseigné pour la suppression.</div>
+    <?php } 
         } ?>
 
 <div class="table-responsive m-2">

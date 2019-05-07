@@ -8,11 +8,14 @@
             <?php } 
                   elseif (!empty($errors)) { 
                     if (in_array('upload_problem', $errors)) { ?>
-                        <div class="alert alert-danger" role="alert">La bannière n'a pas pu être créée en BDD.</div>
+                        <div class="alert alert-danger" role="alert">Le commentaire n'a pas pu être créé en BDD.</div>
                 <?php   } 
                     if (in_array('missing_fields', $errors)) { ?>
-                            <div class="alert alert-danger" role="alert">Un ou plusieurs champs ne sont pas renseignés, tous les champs doivent être renseignés afin de procéder à la création de la bannière.</div>
-            <?php   } 
+                        <div class="alert alert-danger" role="alert">Un ou plusieurs champs ne sont pas renseignés, tous les champs doivent être renseignés afin de procéder à la création du commentaire.</div>
+                <?php   } 
+                    if (in_array('no_chapter_id', $errors)) { ?>
+                        <div class="alert alert-danger" role="alert">Aucun numéro de chapitre renseigné pour la création du commentaire.</div>
+                <?php   }
                   } ?>
         </div>
         <div class="form-group">

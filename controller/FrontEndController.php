@@ -199,34 +199,40 @@ class FrontEndController extends Controller {
         }
         
     }
-    public function postComment($chapter_id) {
+    public function postComment() {
         $comment_data = [];
         $errors = [];
 
-        if (!empty($_POST['comment-title']) && !empty($_POST['comment'])){
-            
-            $comment_data = array(
-                'title' => htmlspecialchars($_POST['comment-title']),
-                'content' => htmlspecialchars($_POST['comment']),
-                'chapter_id' => $chapter_id,
-                'user_id' => $_SESSION['user']->id()
-            );
+        if (isset($_GET['id']) && $_GET['id'] > 0) {
 
-            if (empty($errors)) {
-                $comment_manager = new CommentManager();
-                $comment = new Comment($comment_data);
-                $affected_lines = $comment_manager->createComment($comment);
-    
-                if (!$affected_lines) {
-                    $errors[] = 'upload_problem';
-                } else {
-                    header('Location: index.php?action=showChapter&id='. $chapter_id . '&comment=create');
-                    exit;
-                }
-            }         
+            if (!empty($_POST['comment-title']) && !empty($_POST['comment'])){
+            
+                $comment_data = array(
+                    'title' => htmlspecialchars($_POST['comment-title']),
+                    'content' => htmlspecialchars($_POST['comment']),
+                    'chapter_id' => $_GET['id'],
+                    'user_id' => $_SESSION['user']->id()
+                );
+
+                if (empty($errors)) {
+                    $comment_manager = new CommentManager();
+                    $comment = new Comment($comment_data);
+                    $affected_lines = $comment_manager->createComment($comment);
+        
+                    if (!$affected_lines) {
+                        $errors[] = 'upload_problem';
+                    } else {
+                        header('Location: index.php?action=showChapter&id='. $chapter_id . '&comment=create');
+                        exit;
+                    }
+                }         
+            }
+            else {
+                $errors[] = 'missing_fields';
+            }
         }
         else {
-            $errors[] = 'missing_fields';
+            $errors[] = "no_chapter_id";
         }
 
         $this->showChapter($errors);

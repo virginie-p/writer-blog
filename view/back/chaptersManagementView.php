@@ -1,6 +1,13 @@
 <?php ob_start(); ?>
 <h3 class="mt-2 mb-4 text-center">Gestion des Chapitres</h3>
 
+<?php if (!empty($errors)) { 
+        if (in_array('no_book_id', $errors)) {?>
+          <div class="alert alert-danger" role="alert">Aucun numéro de livre renseigné.</div>
+  <?php } 
+      } ?>
+
+<?php if (isset($book) && $book != false) { ?>
 <div class="m-2 text-right">
   <a class="add-action" href="index.php?action=createChapter&bookId=<?=$book->id()?>">
     <img src="https://img.icons8.com/plasticine/100/000000/plus.png">
@@ -56,6 +63,8 @@
 </div>
 
 <?php require('deleteModalView.php'); ?>
+
+<?php } ?>
 
 <?php $content = ob_get_clean(); ?>
 

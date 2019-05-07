@@ -1,6 +1,7 @@
 <?php ob_start(); ?>
-
+<?php if (isset($book)) { ?>
 <h3 class="mt-2 mb-4 text-center">Création d'un nouveau chapitre pour le livre :<br/>"<?=$book->title()?>"</h3>
+<?php } ?>
 
 <?php if (!empty($errors)) { 
         if (in_array('upload_problem', $errors)) { ?>
@@ -11,9 +12,13 @@
     <?php   } 
             if (in_array('image_or_size_invalid', $errors)) { ?>
                 <div class="alert alert-danger" role="alert">Votre image dépasse la taille maximum autorisée par le serveur (2Mo)</div>
+    <?php   } 
+            if (in_array('no_book_id', $errors)) { ?>    
+                <div class="alert alert-danger" role="alert">Aucun numéro de livre renseigné pour la création du chapitre</div>
     <?php   }
         } ?>
 
+<?php if (isset($book)) { ?>
 <form class="mx-4" action="index.php?action=createChapter&bookId=<?=$book->id()?>" method="post" id="create-chapter" enctype="multipart/form-data">
     <div class="row">
         <div class="form-group col">
@@ -40,6 +45,7 @@
 
   <button type="submit" class="btn btn-primary" form="create-chapter">Créer le chapitre</button>
 </form>
+<?php } ?>
 
 <?php $content = ob_get_clean(); ?>
 

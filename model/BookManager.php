@@ -117,9 +117,9 @@ class BookManager extends Manager {
         $db = $this->MySQLConnect();
         $req = $db->prepare('DELETE FROM projet_4_books WHERE id = ?');
         
-        $affected_lines = $req->execute(array($book_id));
+        $affected_line = $req->execute(array($book_id));
 
-        return $affected_lines;
+        return $affected_line;
     }
     
 

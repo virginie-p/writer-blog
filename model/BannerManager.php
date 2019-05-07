@@ -53,10 +53,11 @@ class BannerManager extends Manager {
         $db = $this->MySQLConnect();
 
         if (empty($banner->image())) {
-            $req= $db->prepare('UPDATE projet_4_banners SET title = :title, caption = :caption, button_title = :button_title, button_link = :button_link, modification_date = NOW()
+            $req= $db->prepare('UPDATE projet_4_banners SET display_order = :display_order, title = :title, caption = :caption, button_title = :button_title, button_link = :button_link, modification_date = NOW()
             WHERE id = :id');
 
             $affected_lines =  $req->execute(array(
+                'display_order' => $banner->displayOrder(),
                 'title' => $banner->title(),
                 'caption' => $banner->caption(),
                 'button_title' => $banner->buttonTitle(), 

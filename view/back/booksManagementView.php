@@ -10,11 +10,20 @@
 </div>
 
 <?php  if (isset($_GET['book'])) {
-          if ($_GET['book'] == 'delete') { ?>Le livre a bien été supprimé.</div>
+          if ($_GET['book'] == 'delete') { ?>
+            <div class="alert alert-success" role="alert">Le livre a bien été supprimé.</div>
     <?php } 
           elseif ($_GET['book'] == 'creation') { ?>
             <div class="alert alert-success" role="alert">Le nouveau livre a bien été ajouté.</div>
     <?php } 
+        } 
+        elseif (isset($errors))  { 
+          if (in_array('no_book_id', $errors)) { ?>
+            <div class="alert alert-danger" role="alert">Aucun numéro de livre renseigné pour la suppression.</div>
+    <?php } 
+          elseif (in_array('wrong_book_id', $errors)) { ?>
+            <div class="alert alert-danger" role="alert">Le livre n'a pu être supprimé dans la BDD. Merci de réessayer.</div>
+    <?php }
         } ?>
 
 <div class="table-responsive m-2">

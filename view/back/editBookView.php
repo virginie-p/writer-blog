@@ -1,6 +1,8 @@
 <?php ob_start(); ?>
 
+<?php if(isset($book)) { ?>
 <h3 class="mt-2 mb-4 text-center">Modification du livre intitulé <?=$book->title()?></h3>
+<?php } ?>
 
 <?php   if (!empty($errors)) { 
         if (in_array('upload_problem', $errors)) { ?>
@@ -12,16 +14,16 @@
             if (in_array('image_or_size_invalid', $errors)) { ?>
                 <div class="alert alert-danger" role="alert">Votre image dépasse la taille maximum autorisée par le serveur (2Mo) ou vous n'avez pas sélectionné d'image</div>
     <?php   }
+            if (in_array('no_book_id', $errors)) { ?>
+                <div class="alert alert-danger" role="alert">Aucun numéro de livre renseigné pour l'édition.</div>
+    <?php   }
         } 
         elseif (isset($book_edit_succeed)) { ?>
             <div class="alert alert-success" role="alert">Le livre a bien été mise à jour.</div>
 <?php   } ?>
 
+<?php if(isset($book)) { ?>
 <form class="mx-4" action="index.php?action=editBook&amp;id=<?=$book->id()?>" method="post" id="edit-book" enctype="multipart/form-data">
-    <div class="form-group" hidden>
-        <label for="id">Id</label>
-        <input type="number" class="form-control" id="id" name="id" value="<?= $book->id() ?>">
-    </div>
     <div class="form-group">
         <label for="author">Auteur</label>
         <select name="author" id="author" class="form-control form-control-sm">
@@ -53,6 +55,7 @@
 
   <button type="submit" class="btn btn-primary" form="edit-book">Modifier le livre</button>
 </form>
+<?php } ?>
 
 <?php $content = ob_get_clean(); ?>
 

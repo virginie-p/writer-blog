@@ -1,5 +1,16 @@
 <?php ob_start(); ?>
 
+
+<?php if (isset($errors))  { 
+          if (in_array('no_user_id', $errors)) { ?>
+            <div class="alert alert-danger" role="alert">Aucun numéro d'utilisateur renseigné.</div>
+    <?php }
+          if (in_array('wrong_user_id', $errors)) { ?>
+            <div class="alert alert-danger" role="alert">Mauvais numéro d'utilisateur renseigné.</div>
+    <?php }
+        } ?>
+
+<?php if (isset($user) && $user != false) { ?>
 <h3 class="mt-2 mb-4 text-center">Fiche utilisateur de : "<?=$user->username()?>"</h3>
 <div class="container user-info">
     <div class="row d-flex justify-content-center mx-auto">
@@ -34,6 +45,8 @@
 </div>
 
 <?php require('deleteModalView.php'); ?>
+
+<?php } ?>
 
 <?php $content = ob_get_clean(); ?>
 

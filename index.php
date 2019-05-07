@@ -36,9 +36,7 @@ try {
         }
         elseif ($_GET['action'] == 'postComment') {
             if(isset($_SESSION['user']) && $_SESSION['user']->userType() == 3) {
-                if (isset($_GET['id']) && $_GET['id'] > 0) {
-                    $controller_front->postComment($_GET['id']);
-                }
+                $controller_front->postComment();
             }
         }
         elseif ($_GET['action'] == 'reportComment') {
@@ -58,14 +56,12 @@ try {
         }
         elseif ($_GET['action'] == 'editBanner'){
             if (isset($_SESSION['user']) && ($_SESSION['user']->userType() == 1 || $_SESSION['user']->userType() == 2)) {
-                $controller_back->editBanner($_GET['id']);
+                $controller_back->editBanner();
             }
         }
         elseif($_GET['action'] == 'deleteBanner') {
             if (isset($_SESSION['user']) && ($_SESSION['user']->userType() == 1 || $_SESSION['user']->userType() == 2)) {
-                if (isset($_GET['id']) && $_GET['id'] > 0) {
-                    $controller_back->deleteBanner($_GET['id']);
-                }
+                $controller_back->deleteBanner();
             }
         }
         elseif ($_GET['action'] == "showBooksManagement") {
@@ -80,30 +76,27 @@ try {
         }
         elseif ($_GET['action'] == 'editBook'){
             if (isset($_SESSION['user']) && ($_SESSION['user']->userType() == 1 || $_SESSION['user']->userType() == 2)) {
-                if (isset($_GET['id']) && $_GET['id'] > 0) {
-                    $controller_back->editBook($_GET['id']);
-                }
+                $controller_back->editBook();
+            }
+        }
+        elseif($_GET['action'] == 'deleteBook') {
+            if (isset($_SESSION['user']) && ($_SESSION['user']->userType() == 1 || $_SESSION['user']->userType() == 2)) {
+                $controller_back->deleteBook();
             }
         }
         elseif ($_GET['action'] == 'showChaptersManagement') {
             if (isset($_SESSION['user']) && ($_SESSION['user']->userType() == 1 || $_SESSION['user']->userType() == 2)) {
-                if (isset($_GET['bookId']) && $_GET['bookId'] > 0) {
-                    $controller_back->showChaptersSection($_GET['bookId']);
-                }
+                    $controller_back->showChaptersSection();
             }
         }
         elseif ($_GET['action'] == 'createChapter') {
             if (isset($_SESSION['user']) && ($_SESSION['user']->userType() == 1 || $_SESSION['user']->userType() == 2)) {
-                if (isset($_GET['bookId']) && $_GET['bookId'] > 0){
-                    $controller_back->createChapter($_GET['bookId']);
-                }
+                $controller_back->createChapter();
             }
         }
         elseif ($_GET['action'] == 'editChapter'){
             if (isset($_SESSION['user']) && ($_SESSION['user']->userType() == 1 || $_SESSION['user']->userType() == 2)) {
-                if (isset($_GET['id']) && $_GET['id'] > 0) {
-                    $controller_back->editChapter($_GET['id']);
-                }
+                $controller_back->editChapter();
             }
         }
         elseif ($_GET['action'] == 'showUsersManagement') {
@@ -113,16 +106,12 @@ try {
         }
         elseif ($_GET['action'] == 'displayUser') {
             if (isset($_SESSION['user']) && ($_SESSION['user']->userType() == 1 || $_SESSION['user']->userType() == 2)) {
-                if (isset($_GET['id']) && $_GET['id'] > 0) {
-                    $controller_back->displayUser($_GET['id']);
-                }
+                $controller_back->displayUser();
             }
         }
         elseif ($_GET['action'] == 'deleteUser') {
             if (isset($_SESSION['user']) && ($_SESSION['user']->userType() == 1 || $_SESSION['user']->userType() == 2)) {
-                if (isset($_GET['id']) && $_GET['id'] > 0) {
-                    $controller_back->deleteUser($_GET['id']);
-                }
+                $controller_back->deleteUser();
             }
         }
         elseif ($_GET['action'] == 'showCommentsManagement') {

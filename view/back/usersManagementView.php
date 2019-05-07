@@ -1,9 +1,17 @@
 <?php ob_start(); ?>
 <h3 class="mt-2 mb-4 text-center">Gestion des Membres</h3>
 
-<?php  if (isset($_GET['user'])) {
-          if ($_GET['user'] == 'delete') { ?>
-          <div class="alert alert-success" role="alert">L'utilisateur a bien été supprimé.</div>
+<?php if (isset($_GET['user'])) {
+        if ($_GET['user'] == 'delete') { ?>
+        <div class="alert alert-success" role="alert">L'utilisateur a bien été supprimé.</div>
+  <?php }
+      } ?>
+<?php if (isset($errors))  { 
+          if (in_array('no_user_id', $errors)) { ?>
+            <div class="alert alert-danger" role="alert">Aucun numéro d'utilisateur renseigné.</div>
+    <?php }
+          if (in_array('wrong_user_id', $errors)) { ?>
+            <div class="alert alert-danger" role="alert">Mauvais numéro d'utilisateur renseigné.</div>
     <?php }
         } ?>
 

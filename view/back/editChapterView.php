@@ -1,6 +1,7 @@
 <?php ob_start(); ?>
-
+<?php if (isset($chapter)) { ?>
 <h3 class="mt-2 mb-4 text-center">Edition du chapitre  :<br/>"<?=$chapter->title()?>"</h3>
+<?php } ?>
 
 <?php if (!empty($errors)) { 
         if (in_array('upload_problem', $errors)) { ?>
@@ -11,12 +12,16 @@
     <?php   } 
             if (in_array('image_or_size_invalid', $errors)) { ?>
                 <div class="alert alert-danger" role="alert">Votre image dépasse la taille maximum autorisée par le serveur (2Mo)</div>
+    <?php   } 
+            if (in_array('no_book_id', $errors)) { ?>    
+                <div class="alert alert-danger" role="alert">Aucun numéro de chapitre renseigné pour l'édition.</div>
     <?php   }
         } 
         elseif (isset($chapter_edit_succeed)) { ?>
             <div class="alert alert-success" role="alert">Le chapitre a bien été mise à jour.</div>
 <?php   } ?>
 
+<?php if (isset($chapter)) { ?>
 <form class="mx-4" action="index.php?action=editChapter&id=<?=$chapter->id()?>" method="post" id="edit-chapter" enctype="multipart/form-data">
     <div class="row">
         <div class="form-group col">
@@ -37,12 +42,13 @@
         <?php   if (!empty($upload_errors)) { 
                     if (in_array('invalid_extension', $upload_errors)) { ?>
                         <div class="alert alert-danger" role="alert">Ce type de fichier n'est pas accepté. Seuls les fichiers .jpeg, .jpg et .png sont acceptés.</div>
-        <?php       } 
-                }    ?>
+            <?php   } 
+                } ?>
     </div>
 
   <button type="submit" class="btn btn-primary" form="edit-chapter">Modifier le chapitre</button>
 </form>
+<?php } ?>
 
 <?php $content = ob_get_clean(); ?>
 
