@@ -21,14 +21,10 @@ try {
             $controller_front->showBooksList();
         }
         elseif ($_GET['action'] == 'showBookChapters') {
-            if (isset($_GET['id']) && $_GET['id'] > 0) {
-                $controller_front->showBookChapters($_GET['id']);
-            }
+            $controller_front->showBookChapters();
         }
         elseif ($_GET['action'] == 'showChapter') {
-            if (isset($_GET['id']) && $_GET['id'] > 0) {
-                $controller_front->showChapter($_GET['id']);
-            }
+            $controller_front->showChapter();
         }
         elseif ($_GET['action'] == 'subscribe') {
             $controller_front->createUser();
@@ -39,14 +35,14 @@ try {
             }
         }
         elseif ($_GET['action'] == 'postComment') {
-            if(isset($_SESSION['user']) && $_SESSION['user'] == 3) {
-                if (isset($_GET['chapterId']) && $_GET['chapterId'] > 0) {
-                    $controller_front->postComment($_GET['chapterId']);
+            if(isset($_SESSION['user']) && $_SESSION['user']->userType() == 3) {
+                if (isset($_GET['id']) && $_GET['id'] > 0) {
+                    $controller_front->postComment($_GET['id']);
                 }
             }
         }
         elseif ($_GET['action'] == 'reportComment') {
-            if(isset($_SESSION['user']) && $_SESSION['user'] == 3) {
+            if(isset($_SESSION['user']) && $_SESSION['user']->userType() == 3) {
                 $controller_front->reportComment();
             }
         }
@@ -62,9 +58,7 @@ try {
         }
         elseif ($_GET['action'] == 'editBanner'){
             if (isset($_SESSION['user']) && ($_SESSION['user']->userType() == 1 || $_SESSION['user']->userType() == 2)) {
-                if (isset($_GET['id']) && $_GET['id'] > 0) {
-                    $controller_back->editBanner($_GET['id']);
-                }
+                $controller_back->editBanner($_GET['id']);
             }
         }
         elseif($_GET['action'] == 'deleteBanner') {

@@ -38,12 +38,12 @@ class BookManager extends Manager {
             lastname, 
             profile_picture, 
             birthdate, 
-            description,  
-            title, 
-            subtitle, 
-            book_cover_image, 
+            description,
+            books.title,
+            subtitle,
+            book_cover_image,
             DATE_FORMAT(books.creation_date, \'%d/%m/%Y à %Hh%i\') AS creation_date, 
-            DATE_FORMAT(modification_date, \'%d/%m/%Y à %Hh%i\') AS modification_date
+            DATE_FORMAT(books.modification_date, \'%d/%m/%Y à %Hh%i\') AS modification_date
             FROM projet_4_books AS books
             INNER JOIN projet_4_users 
             ON books.author_id = projet_4_users.id 

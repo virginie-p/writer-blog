@@ -62,6 +62,7 @@ class ChapterManager extends Manager {
             'SELECT chapters.id,
             book_id,
             chapters.title,
+            projet_4_books.title AS book_title,
             content,
             image,
             DATE_FORMAT(chapters.creation_date, \'%d/%m/%Y à %Hh%i\') AS creation_date, 

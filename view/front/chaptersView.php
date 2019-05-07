@@ -1,4 +1,10 @@
 <?php ob_start(); ?>
+<div>
+  <?php if(isset($error) && $error == 'wrong_book_id') {?> <div class="alert alert-danger" role="alert">Mauvais numéro de livre renseigné.</div> <?php }?>
+  <?php if(isset($error) && $error == 'no_book_id') {?> <div class="alert alert-danger" role="alert">Aucun numéro de livre renseigné.</div> <?php }?>
+</div>
+
+<?php if (isset($chapters) && isset($book) && $chapters != false && $book != false) { ?>
 <h2 class="row justify-content-center mx-0 mt-4 mb-1"><?=$book->title()?></h2>
 <h3 class="book-chapter-category row justify-content-center mx-0 mb-5">Chapitres</h3>
 <ul class="list-unstyled">
@@ -13,6 +19,8 @@
   </li>
  <?php } ?>
 </ul>
+
+<?php } ?>
 
 <?php $content = ob_get_clean(); ?>
 

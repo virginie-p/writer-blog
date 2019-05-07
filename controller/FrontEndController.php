@@ -12,7 +12,7 @@ use App\entity\Book;
 use App\entity\Chapter;
 use App\entity\Comment;
 
-require_once(__DIR__.'/../config.php');
+require_once(__DIR__.'/../configuration.php');
 
 class FrontEndController extends Controller {
     public function showHomepageFront() {
@@ -63,25 +63,41 @@ class FrontEndController extends Controller {
         require(__DIR__.'/../view/front/booksView.php');
     }
 
-    public function showBookChapters($book_id) {
-        $books_manager = new BookManager();
-        $book = $books_manager->getBook($book_id);
+    public function showBookChapters() {
+        if (isset($_GET['id']) && $_GET['id'] > 0) {
+            $book_manager = new BookManager();
+            $book = $book_manager->getBook($_GET['id']);
 
-        $chapter_manager = new ChapterManager();
-        $chapters = $chapter_manager->getChapters($book_id);
+            $chapter_manager = new ChapterManager();
+            $chapters = $chapter_manager->getChapters($_GET['id']);
 
+            if(!$book){
+                $error = 'wrong_book_id';
+            }
+        }
+        else {
+            $error = "no_book_id";
+        }
         require(__DIR__.'/../view/front/chaptersView.php');
     }
 
-    public function showChapter($id, $errors = NULL) {
-        $chapter_manager = new ChapterManager();
-        $chapter = $chapter_manager->getChapter($id);
+    public function showChapter($errors = NULL) {
 
-        $book_manager = new BookManager();
-        $book = $book_manager->getBook($chapter->bookId());
+        if (isset($_GET['id']) && $_GET['id'] > 0) {
 
-        $comment_manager = new CommentManager();
-        $comments = $comment_manager->getComments($id);
+            $chapter_manager = new ChapterManager();
+            $chapter = $chapter_manager->getChapter($_GET['id']);
+
+            $comment_manager = new CommentManager();
+            $comments = $comment_manager->getComments($_GET['id']);
+
+            if (!$chapter) {
+                $error = 'wrong_chapter_id';
+            }
+        }
+        else {
+            $error = "no_chapter_id";
+        }
 
         require(__DIR__.'/../view/front/chapterView.php');
     }
@@ -122,8 +138,8 @@ class FrontEndController extends Controller {
                 'username' => $_POST['subscribe-username'],
                 'password' => password_hash($_POST['subscribe-password'], PASSWORD_DEFAULT),
                 'email' => $_POST['email'],
-                'lastname' => $_POST['lastname'],
-                'firstname' =>$_POST['firstname']
+                'lastname' => htmlspecialchars($_POST['lastname']),
+                'firstname' => htmlspecialchars($_POST['firstname'])
             );
 
             $image_input_name = 'profile-picture';
@@ -133,7 +149,7 @@ class FrontEndController extends Controller {
             }
 
             if (empty($errors)) { 
-                $upload_data = $this->createImageInFolder($image_input_name, $profile_picture_width, $profile_picture_height, $profile_picture_folder);
+                $upload_data = $this->createImageInFolder($image_input_name, profile_picture_width, profile_picture_height, profile_picture_folder);
 
                 $upload_errors = $upload_data[0];
 
@@ -149,6 +165,22 @@ class FrontEndController extends Controller {
                     if (!$affected_lines) {
                         $errors[] = 'upload_problem';
                     } else {
+                        $headers  = 'From: "Virginie PEREIRA" <contact@virginie-pereira.fr>' . "\r\n" .
+                                    'Reply-To: "Virginie PEREIRA" <contact@virginie-pereira.fr>' . "\r\n" .
+                                    'MIME-Version: 1.0' . "\r\n" .
+                                    'Content-type: text/html;  charset=utf-8'. "\r\n" .
+                                    'X-Mailer: PHP/' . phpversion();
+
+                        $message =  '<html><body>'. "\r\n" .
+                                    '<img src="https://virginie-pereira.fr/projet-4/public/images/logo.png" style="width:80px;height:80px"><span style="font-weight:bold">Evasion Littéraire</span>'. "\r\n" .
+                                    '<p> Bonjour ' . $new_user->firstname() . ' !</p>'."\r\n" .
+                                    '<p> Vous êtes bien inscrit sur Evasion Littéraire ! </p>'."\r\n" .
+                                    '<p> N\'hésitez pas à vous connecter très souvent sur le site pour'."\r\n" .
+                                    ' pouvoir profiter des nouveaux chapitres mis en ligne ! :) </p>'."\r\n" .
+                                    '<p> A très bientôt ! </p>' ."\r\n" .
+                                    '</body></html>';
+
+                        mail($new_user->email(), 'Votre inscription à Evasion littéraire', $message, $headers);
                         echo json_encode([
                             'status' => 'success'
                         ]);
@@ -197,7 +229,7 @@ class FrontEndController extends Controller {
             $errors[] = 'missing_fields';
         }
 
-        $this->showChapter($chapter_id, $errors);
+        $this->showChapter($errors);
     }
 
     public function reportComment() {
@@ -205,6 +237,7 @@ class FrontEndController extends Controller {
     
         if(isset($_GET['id']) && $_GET['id']>0) {
             $affected_line = $comment_manager->changeModerationStatus(1, $_GET['id']);
+
             if(!$affected_line) {
                 echo json_encode([
                     'status' => 'error',
