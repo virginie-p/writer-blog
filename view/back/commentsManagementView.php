@@ -5,13 +5,22 @@
           if ($_GET['comment'] == 'delete') { ?>
             <div class="alert alert-success" role="alert">Le commentaire a bien été supprimé.</div>
     <?php }
-          elseif ($_GET['comment'] == 'delete-error') { ?>
-            <div class="alert alert-danger" role="alert">Aucun numéro de commentaire renseigné pour la suppression.</div>
-    <?php } 
         }
-        elseif (isset($error) && $error == 'no_chapter_id') { ?>
+        elseif (isset($errors)) {
+          if(in_array('no_chapter_id', $errors)) { ?>
             <div class="alert alert-danger" role="alert">Aucun numéro de chapitre renseigné.</div>
-<?php   } ?>
+    <?php }
+          if(in_array('wrong_chapter_id', $errors)) { ?>
+            <div class="alert alert-danger" role="alert">Mauvais numéro de chapitre renseigné.</div>
+    <?php }
+          if(in_array('wrong_comment_id', $errors)) { ?>
+            <div class="alert alert-danger" role="alert">Mauvais numéro de commentaire renseigné pour la suppression.</div>
+    <?php }
+          if(in_array('no_comment_id', $errors)) { ?>
+            <div class="alert alert-danger" role="alert">Aucun numéro de commentaire renseigné pour la suppression.</div>
+    <?php }
+        } ?>
+
 <div class="comment-validation-messages"></div>
 <div class="table-responsive m-2">
 <table class="table table-bordered table-hover table-sm text-center">
@@ -26,7 +35,13 @@
     </tr>
   </thead>
   <tbody>
-    <?php foreach($comments as $comment) { ?>
+  <?php if (empty($comments)) { ?>
+    <tr>
+    <td scope="row" colspan="6">Aucun commentaire n'a encore été posté sur ce chapitre.</th>
+    </tr>
+    <?php }
+          else {
+            foreach($comments as $comment) { ?>
     <tr class="<?php if ($comment->moderationStatus() == 1) {?> table-warning <?php }?>">
         <th scope="row"><?=$comment->id()?></th>
         <td><?=$comment->username?></td>
@@ -47,7 +62,8 @@
           </a>
         </td>
     </tr>
-    <?php } ?>
+    <?php   }
+          } ?>
   </tbody>
 </table>
 </div>

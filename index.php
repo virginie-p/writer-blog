@@ -99,6 +99,11 @@ try {
                 $controller_back->editChapter();
             }
         }
+        elseif ($_GET['action'] == 'deleteChapter'){
+            if (isset($_SESSION['user']) && ($_SESSION['user']->userType() == 1 || $_SESSION['user']->userType() == 2)) {
+                $controller_back->deleteChapter();
+            }
+        }
         elseif ($_GET['action'] == 'showUsersManagement') {
             if (isset($_SESSION['user']) && ($_SESSION['user']->userType() == 1 || $_SESSION['user']->userType() == 2)) {
                 $controller_back->showUsersSection();

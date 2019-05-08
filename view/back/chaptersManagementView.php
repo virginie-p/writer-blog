@@ -1,11 +1,16 @@
 <?php ob_start(); ?>
 <h3 class="mt-2 mb-4 text-center">Gestion des Chapitres</h3>
-
-<?php if (!empty($errors)) { 
-        if (in_array('no_book_id', $errors)) {?>
-          <div class="alert alert-danger" role="alert">Aucun numéro de livre renseigné.</div>
-  <?php } 
-      } ?>
+<?php   if (!empty($errors)) { 
+          if (in_array('no_book_id', $errors)) {?>
+            <div class="alert alert-danger" role="alert">Aucun numéro de livre renseigné.</div>
+    <?php }
+          if(in_array('no_chapter_id', $errors)) { ?>
+            <div class="alert alert-danger" role="alert">Aucun numéro de chapitre renseigné pour la suppression.</div>
+    <?php }
+          if(in_array('wrong_chapter_id', $errors)) { ?>
+            <div class="alert alert-danger" role="alert">Mauvais numéro de chapitre renseigné pour la suppression.</div>
+    <?php } 
+        } ?>
 
 <?php if (isset($book) && $book != false) { ?>
 <div class="m-2 text-right">
@@ -16,7 +21,8 @@
 </div>
 
 <?php  if (isset($_GET['chapter'])) {
-          if ($_GET['chapter'] == 'delete') { ?>Le chapitre a bien été supprimé.</div>
+          if ($_GET['chapter'] == 'delete') { ?>
+           <div class="alert alert-success" role="alert">La chapitre a bien été supprimé.</div>
     <?php } 
           elseif ($_GET['chapter'] == 'creation') { ?>
             <div class="alert alert-success" role="alert">Le nouveau chapitre a bien été ajouté.</div>
@@ -37,7 +43,13 @@
     </tr>
   </thead>
   <tbody>
-    <?php foreach($chapters as $chapter) { ?>
+  <?php if (empty($chapters)) { ?>
+    <tr>
+    <td scope="row" colspan="7">Aucun chapitre n'a encore été posté sur ce livre.</th>
+    </tr>
+    <?php }
+          else {
+             foreach($chapters as $chapter) { ?>
     <tr class="justify-content-center">
         <th scope="row"><?=$chapter->id()?></th>
         <td><?=$book->title()?></td>
@@ -57,7 +69,8 @@
           </a>
         </td>
     </tr>
-    <?php } ?>
+    <?php   }
+          } ?>
   </tbody>
 </table>
 </div>

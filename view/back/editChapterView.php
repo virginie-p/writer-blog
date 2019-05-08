@@ -46,7 +46,7 @@
                 } ?>
     </div>
 
-  <button type="submit" class="btn btn-primary" form="edit-chapter">Modifier le chapitre</button>
+  <button type="submit" class="btn btn-primary mb-2" form="edit-chapter">Modifier le chapitre</button>
 </form>
 <?php } ?>
 

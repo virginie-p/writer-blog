@@ -133,6 +133,10 @@ class FrontEndController extends Controller {
                 $errors[] = 'email_invalid';
             }
 
+            if(preg_match('#^[[:blank:]\n]+$#', $_POST['lastname']) || preg_match('#^[[:blank:]\n]+$#', $_POST['firstname'])) {
+                $errors[] = 'just_spaces';
+            }
+
             $user_data = array(
                 'user_type' => 3,
                 'username' => $_POST['subscribe-username'],
@@ -222,7 +226,7 @@ class FrontEndController extends Controller {
                     if (!$affected_lines) {
                         $errors[] = 'upload_problem';
                     } else {
-                        header('Location: index.php?action=showChapter&id='. $chapter_id . '&comment=create');
+                        header('Location: index.php?action=showChapter&id='. $_GET['id'] . '&comment=create');
                         exit;
                     }
                 }         

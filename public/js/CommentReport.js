@@ -20,7 +20,7 @@ $(function() {
             }
             else if (data.status === 'success') {
                 $('#report-message').prepend('<div class="alert alert-success" role="alert">Le commentaire a bien été signalé. Il sera modéré dès que possible.</div>');
-                $('.report-image').addClass('report-disabled');
+                $('.report-image', e.currentTarget).addClass('report-disabled');
                 e.currentTarget.removeAttribute('href');
                 e.currentTarget.setAttribute('title', 'Ce commentaire est en cours de modération');
             }

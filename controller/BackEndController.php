@@ -35,7 +35,20 @@ class BackEndController extends Controller {
             $errors = [];
 
             if (isset($_POST['display-order'], $_POST['title'], $_POST['caption'], $_POST['button-title'], $_POST['button-link'], $_FILES['banner-image'])) {
-                if (!empty($_POST['display-order']) && !empty($_POST['title']) && !empty($_POST['caption']) && !empty($_POST['button-title']) && !empty($_POST['button-link']) && !empty($_FILES['banner-image']['name'])) {
+                if (!empty($_POST['display-order']) 
+                    && !empty($_POST['title']) 
+                    && !empty($_POST['caption']) 
+                    && !empty($_POST['button-title']) 
+                    && !empty($_POST['button-link']) 
+                    && !empty($_FILES['banner-image']['name'])) {
+
+                    if (preg_match('#^[[:blank:]\n]+$#', $_POST['title']) 
+                        || preg_match('#^[[:blank:]\n]+$#', $_POST['caption']) 
+                        || preg_match('#^[[:blank:]\n]+$#', $_POST['button-title']) 
+                        || preg_match('#^[[:blank:]\n]+$#', $_POST['button-link']) ) {
+                            $errors[] = 'just_spaces';
+                        }
+
                     $banner_data = array(
                         'display_order' => $_POST['display-order'],
                         'title' => htmlspecialchars($_POST['title']),
@@ -45,35 +58,40 @@ class BackEndController extends Controller {
                     );
 
                     $image_input_name = 'banner-image';
-                              
-                    if($_FILES[$image_input_name]['error'] == 0) {
-                        $upload_data = $this->createImageInFolder($image_input_name, $banner_with, $banner_height, $banner_folder);
 
-                        $upload_errors = $upload_data[0];
-
-                        if (!empty($upload_data[1])) {
-                        
-                            $image_name = $upload_data[1];
-
-                            $banner_data['image'] = htmlspecialchars($image_name);
-
-                            $new_banner = new Banner($banner_data);
-
-                            $affected_lines = $banner_manager->createBanner($new_banner);
-
-                            if (!$affected_lines) {
-                                $errors[] = 'upload_problem';
-                            } else {
-                                header('Location:index.php?action=showBannersManagement&banner=creation');
+                    if (empty($errors)) {
+                        if($_FILES[$image_input_name]['error'] == 0) {
+                            $upload_data = $this->createImageInFolder($image_input_name, $banner_with, $banner_height, $banner_folder);
+        
+                            $upload_errors = $upload_data[0];
+        
+                            if (!empty($upload_data[1])) {
+                            
+                                $image_name = $upload_data[1];
+        
+                                $banner_data['image'] = htmlspecialchars($image_name);
                             }
+        
+                        } else {
+                            $errors[]='image_or_size_invalid';
                         }
-                    } else {
-                        $errors[]='image_or_size_invalid';
                     }
                 }
                 else  {
                     $errors[] = 'missing_fields';
                 }
+
+                if(empty($errors)) {
+                    $new_banner = new Banner($banner_data);
+
+                    $affected_lines = $banner_manager->createBanner($new_banner);
+
+                    if (!$affected_lines) {
+                        $errors[] = 'upload_problem';
+                    } else {
+                        header('Location:index.php?action=showBannersManagement&banner=creation');
+                    }
+                } 
             }
         }
 
@@ -90,20 +108,27 @@ class BackEndController extends Controller {
 
             if (isset($_POST['display-order'], $_POST['title'], $_POST['caption'], $_POST['button-title'], $_POST['button-link'], $_FILES[$image_input_name])) {
                 if (!empty($_POST['display-order']) && !empty($_POST['title']) && !empty($_POST['caption']) && !empty($_POST['button-title']) && !empty($_POST['button-link'])) {
+                    if (preg_match('#^[[:blank:]\n]+$#', $_POST['title']) 
+                        || preg_match('#^[[:blank:]\n]+$#', $_POST['caption']) 
+                        || preg_match('#^[[:blank:]\n]+$#', $_POST['button-title']) 
+                        || preg_match('#^[[:blank:]\n]+$#', $_POST['button-link']) ) {
+                            $errors[] = 'just_spaces';
+                        }
+                        
                     $modified_data = array(
-                        'id' => $_GET['id'],
-                        'display_order' => $_POST['display-order'],
-                        'title' => htmlspecialchars($_POST['title']),
-                        'caption' => htmlspecialchars($_POST['caption']),
-                        'button_title' => htmlspecialchars($_POST['button-title']),
-                        'button_link' => htmlspecialchars($_POST['button-link'])
+                    'id' => $_GET['id'],
+                    'display_order' => $_POST['display-order'],
+                    'title' => htmlspecialchars($_POST['title']),
+                    'caption' => htmlspecialchars($_POST['caption']),
+                    'button_title' => htmlspecialchars($_POST['button-title']),
+                    'button_link' => htmlspecialchars($_POST['button-link'])
                     );
                 }
                 else {
                     $errors[]= 'missing_fields';
                 }
             
-                if (!empty($_FILES[$image_input_name]['name'])) {       
+                if (!empty($_FILES[$image_input_name]['name']) && empty($errors)) {       
                     if($_FILES[$image_input_name]['error'] == 0) {
                         $upload_data = $this->createImageInFolder($image_input_name, $banner_with, $banner_height, $banner_folder);
 
@@ -169,22 +194,27 @@ class BackEndController extends Controller {
         $authors= $user_manager->getAdmins();
 
         $book_data = [];
+        $errors = [];
 
-        if (isset($_POST) && !empty($_POST)) {
-            $errors = [];
+        if (isset($_POST['author'], $_POST['title'], $_POST['subtitle'], $_FILES['book-cover-image'])) {
+            if (($_POST['author']>0) && !empty($_POST['title']) && !empty($_POST['subtitle']) && !empty($_FILES['book-cover-image']['name'])) {
+                if (preg_match('#^[[:blank:]\n]+$#', $_POST['author']) 
+                    || preg_match('#^[[:blank:]\n]+$#', $_POST['title']) 
+                    || preg_match('#^[[:blank:]\n]+$#', $_POST['subtitle']) ) {
+                        $errors[] = 'just_spaces';
+                    }
+                
+                $book_data = array(
+                    'author_id' => $_POST['author'],
+                    'title' => htmlspecialchars($_POST['title']),
+                    'subtitle' => htmlspecialchars($_POST['subtitle'])
+                );
 
-            if (isset($_POST['author'], $_POST['title'], $_POST['subtitle'], $_FILES['book-cover-image'])) {
-                if (!($_POST['author']>0) && !empty($_POST['title']) && !empty($_POST['subtitle']) && !empty($_FILES['book-cover-image']['name'])) {
-                    $book_data = array(
-                        'author_id' => $_POST['author'],
-                        'title' => htmlspecialchars($_POST['title']),
-                        'subtitle' => htmlspecialchars($_POST['subtitle'])
-                    );
-
-                    $image_input_name = 'book-cover-image';
-                              
+                $image_input_name = 'book-cover-image';
+                
+                if (empty($errors)) {
                     if($_FILES[$image_input_name]['error'] == 0) {
-                        $upload_data = $this->createImageInFolder($image_input_name, $book_cover_width, $book_cover_height, $book_cover_folder);
+                        $upload_data = $this->createImageInFolder($image_input_name, book_cover_width, book_cover_height, book_cover_folder);
 
                         $upload_errors = $upload_data[0];
 
@@ -209,12 +239,11 @@ class BackEndController extends Controller {
                         $errors[]='image_or_size_invalid';
                     }
                 }
-                else  {
-                    $errors[] = 'missing_fields';
-                }
+            }
+            else  {
+                $errors[] = 'missing_fields';
             }
         }
-
         require(__DIR__.'/../view/back/createBookView.php');
     }
 
@@ -230,6 +259,13 @@ class BackEndController extends Controller {
             if (isset($_POST) && !empty($_POST)) {
                 if (isset($_POST['author'], $_POST['title'], $_POST['subtitle'], $_FILES['book-cover-image'])) {
                     if (!empty($_POST['author']) && !empty($_POST['title']) && !empty($_POST['subtitle'])) {
+                        
+                        if (preg_match('#^[[:blank:]\n]+$#', $_POST['author']) 
+                        || preg_match('#^[[:blank:]\n]+$#', $_POST['title']) 
+                        || preg_match('#^[[:blank:]\n]+$#', $_POST['subtitle']) ) {
+                            $errors[] = 'just_spaces';
+                        }
+                        
                         $modified_data = array(
                             'id' => $_GET['id'],
                             'author_id' => htmlspecialchars($_POST['author']),
@@ -244,31 +280,23 @@ class BackEndController extends Controller {
 
                 $image_input_name = 'book-cover-image';
 
-                if (!empty($_FILES[$image_input_name]['name'])) {
+                if (!empty($_FILES[$image_input_name]['name']) && empty($errors)) {
                                     
                     if($_FILES[$image_input_name]['error'] == 0) {
-                        $upload_data = $this->createImageInFolder($image_input_name, $book_cover_width, $book_cover_height, $book_cover_folder);
+                        $upload_data = $this->createImageInFolder($image_input_name, book_cover_width, book_cover_height, book_cover_folder);
 
                         $upload_errors = $upload_data[0];
                         $image_name = $upload_data[1];
                         
                         $modified_data['book_cover_image'] = htmlspecialchars($image_name);
 
-                        $edited_book = new Book($modified_data);
-
-                        $affected_lines = $book_manager->editBook($edited_book);
-
-                        if (!$affected_lines) {
-                            $errors[] = 'upload_problem';
-                        } else {
-                            $book_edit_succeed = 1;
-                        }
-
                     } else {
                         $errors[]='image_or_size_invalid';
                     }
                     
-                } else {
+                } 
+                
+                if(empty($errors)) {
                     $edited_book = new Book($modified_data);
 
                     $affected_lines = $book_manager->editBook($edited_book);
@@ -312,7 +340,7 @@ class BackEndController extends Controller {
         }
     }
 
-    public function showChaptersSection() {
+    public function showChaptersSection($errors = NULL) {
         $errors = [];
 
         if (isset($_GET['bookId']) && $_GET['bookId'] > 0){
@@ -329,17 +357,21 @@ class BackEndController extends Controller {
     }
 
     public function createChapter() {
-        $errors = [];
-
+        
+        
         if (isset($_GET['bookId']) && $_GET['bookId'] > 0){
             $chapter_manager = new ChapterManager();
             $book_manager = new BookManager();
             $book = $book_manager->getBook($_GET['bookId']);
-
+            $errors = [];
             $chapter_data = [];
             
             if (isset($_POST['title'], $_POST['content'], $_FILES['chapter-image'])) {
                 if (!empty($_POST['title']) && !empty($_POST['content']) && !empty($_FILES['chapter-image']['name'])) {
+                    if (preg_match('#^[[:blank:]\n]+$#', $_POST['title'])) {
+                            $errors[] = 'just_spaces';
+                        }
+                    
                     $chapter_data = array(
                         'book_id' => $_GET['bookId'],
                         'title' => htmlspecialchars($_POST['title']),
@@ -347,35 +379,39 @@ class BackEndController extends Controller {
                     );
 
                     $image_input_name = 'chapter-image';
-                                
-                    if($_FILES[$image_input_name]['error'] == 0) {
-                        $upload_data = $this->createImageInFolder($image_input_name, $chapter_image_width, $chapter_image_height, $chapter_image_folder);
+                    
+                    if(empty($errors)) {
+                        if($_FILES[$image_input_name]['error'] == 0) {
+                            $upload_data = $this->createImageInFolder($image_input_name, chapter_image_width, chapter_image_height, chapter_image_folder);
 
-                        $upload_errors = $upload_data[0];
+                            $upload_errors = $upload_data[0];
 
-                        if (!empty($upload_data[1])) {
-                        
-                            $image_name = $upload_data[1];
+                            if (!empty($upload_data[1])) {
+                            
+                                $image_name = $upload_data[1];
 
-                            $chapter_data['image'] = htmlspecialchars($image_name);
-
-                            $new_chapter = new Chapter($chapter_data);
-
-                            $affected_lines = $chapter_manager->createChapter($new_chapter);
-
-                            if (!$affected_lines) {
-                                $errors[] = 'upload_problem';
-                            } else {
-                                header('Location:index.php?action=showChaptersManagement&bookId='.$book_id.'&chapter=creation');
-                                exit;
+                                $chapter_data['image'] = htmlspecialchars($image_name);
                             }
+                        } else {
+                            $errors[]='image_or_size_invalid';
                         }
-                    } else {
-                        $errors[]='image_or_size_invalid';
                     }
                 }
                 else  {
                     $errors[] = 'missing_fields';
+                }
+
+                if(empty($errors)) {
+                    $new_chapter = new Chapter($chapter_data);
+
+                    $affected_lines = $chapter_manager->createChapter($new_chapter);
+
+                    if (!$affected_lines) {
+                        $errors[] = 'upload_problem';
+                    } else {
+                        header('Location:index.php?action=showChaptersManagement&bookId=' . $_GET['bookId'] . '&chapter=creation');
+                        exit;
+                    }
                 }
             }
         }
@@ -396,6 +432,10 @@ class BackEndController extends Controller {
 
             if (isset($_POST['title'], $_POST['content'], $_FILES['chapter-image'])) {
                 if (!empty($_POST['title']) && !empty($_POST['content'])) {
+                    if (preg_match('#^[[:blank:]\n]+$#', $_POST['title'])) {
+                        $errors[] = 'just_spaces';
+                    }
+
                     $modified_data = array(
                         'id' => $_GET['id'],
                         'title' => htmlspecialchars($_POST['title']),
@@ -408,7 +448,7 @@ class BackEndController extends Controller {
             
                 $image_input_name = 'chapter-image';
 
-                if (!empty($_FILES[$image_input_name]['name'])) {
+                if (!empty($_FILES[$image_input_name]['name']) && empty($errors)) {
                     if($_FILES[$image_input_name]['error'] == 0) {
                         $upload_data = $this->createImageInFolder($image_input_name, 595, 842, 'chapters_images');
 
@@ -444,6 +484,28 @@ class BackEndController extends Controller {
         require(__DIR__.'/../view/back/editChapterView.php');
     }
 
+    public function deleteChapter() {
+        $errors = [];
+
+        if (isset($_GET['id']) && $_GET['id'] > 0) {
+            $chapter_manager = new ChapterManager();
+            $chapter = $chapter_manager->getChapter($_GET['id']);
+            $affected_line = $chapter_manager->deleteChapter($_GET['id']);
+
+            if (!$chapter) {
+                $errors[] = 'wrong_chapter_id';
+            }
+            else {
+                header('Location:index.php?action=showChaptersManagement&bookId='. $chapter->bookId() .'&chapter=delete');
+                exit;
+            }
+        }
+        else {
+            $errors[]= "no_chapter_id";
+            $this->showChaptersSection($errors);
+        }
+    }
+
     public function showUsersSection($errors = NULL) {
         $user_manager = new UserManager();
         $users = $user_manager->getMembers();
@@ -471,31 +533,40 @@ class BackEndController extends Controller {
     public function deleteUser() {
         if (isset($_GET['id']) && $_GET['id'] > 0) {
             $user_manager = new UserManager();
+            $user = $user_manager->getUser($_GET['id']);
             $affected_line = $user_manager->deleteUser($_GET['id']);
 
-            if (empty($affected_line)){
-                header('Location:index.php?action=showUsersManagement&user=delete');
-                exit;
+            if (!$user){
+                $errors[] = 'wrong_user_id';
             }
             else {
-                $errors[] = 'wrong_user_id';
+                header('Location:index.php?action=showUsersManagement&user=delete');
+                exit;
             }
         }
         else {
             $errors[] = 'no_user_id';
-            $this->showUsersSection($errors);
         }
+
+        $this->showUsersSection($errors);
     }
 
     public function showComments($errors= NULL) {
+        $chapter_manager = new ChapterManager();
         $comment_manager = new CommentManager();
+        $errors = [];
 
         if (isset($_GET['id']) && $_GET['id'] > 0) {
+            $chapter = $chapter_manager->getChapter($_GET['id']);
             $comments = $comment_manager->getComments($_GET['id']);
+
+            if(!$chapter) {
+                $errors[] = 'wrong_chapter_id';
+            }
         }
         else {
             $comments = [];
-            $error = 'no_chapter_id';
+            $errors[] = 'no_chapter_id';
         }
 
         require(__DIR__.'/../view/back/commentsManagementView.php');
@@ -506,9 +577,12 @@ class BackEndController extends Controller {
         $comment_manager = new CommentManager();
         if (isset($_GET['id']) && $_GET['id'] > 0) {
             $comment = $comment_manager->getComment($_GET['id']);
+
+            if(!$comment) {
+                $error = 'wrong_comment_id';
+            }
         }
         else {
-            $comment = [];
             $error = 'no_comment_id';
         }
 
@@ -516,20 +590,26 @@ class BackEndController extends Controller {
     }
 
     public function deleteComment() {
+        $errors = [];
         $comment_manager = new CommentManager();
 
         if (isset($_GET['id']) && $_GET['id'] > 0) {
+            $comment = $comment_manager->getComment($_GET['id']);
             $affected_lines = $comment_manager->deleteComment($_GET['id']);
             
-            if ($affected_lines == true){
+            if (!$comment){
+                $errors[] = 'wrong_comment_id';
+            }
+            else {
                 header('Location:index.php?action=showCommentsManagement&comment=delete');
                 exit;
             }
         }
         else {
-            header('Location:index.php?action=showCommentsManagement&comment=delete-error');
-            exit;
+            $errors[] = 'no_comment_id';
         }
+
+        $this->showComments($errors);
 
     }
 

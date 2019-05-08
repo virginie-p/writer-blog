@@ -37,7 +37,13 @@
     </tr>
   </thead>
   <tbody>
-    <?php foreach($banners as $banner) { ?>
+  <?php if (empty($banners)) { ?>
+    <tr>
+    <td scope="row" colspan="6">Aucun commentaire n'a encore été posté sur ce chapitre.</th>
+    </tr>
+    <?php }
+          else {
+            foreach($banners as $banner) { ?>
     <tr>
         <th scope="row"><?= $banner->id() ?></th>
         <td><?= $banner->displayOrder() ?></td>
@@ -53,7 +59,8 @@
           </a>
         </td>
     </tr>
-    <?php } ?>
+    <?php   }
+          } ?>
   </tbody>
 </table>
 </div>

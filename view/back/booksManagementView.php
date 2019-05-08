@@ -40,7 +40,13 @@
     </tr>
   </thead>
   <tbody>
-    <?php foreach($books as $book) { ?>
+  <?php if (empty($books)) { ?>
+    <tr>
+    <td scope="row" colspan="7">Aucun livre n'a encore été posté.</th>
+    </tr>
+    <?php }
+          else {
+            foreach($books as $book) { ?>
     <tr class="justify-content-center">
         <th scope="row"><?= $book->id() ?></th>
         <td><?= $book->firstname . ' ' . $book->lastname ?></td>
@@ -61,7 +67,8 @@
           </a>
         </td>
     </tr>
-    <?php } ?>
+    <?php   }
+          } ?>
   </tbody>
 </table>
 </div>

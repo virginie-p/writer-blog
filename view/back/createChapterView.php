@@ -15,6 +15,9 @@
     <?php   } 
             if (in_array('no_book_id', $errors)) { ?>    
                 <div class="alert alert-danger" role="alert">Aucun numéro de livre renseigné pour la création du chapitre</div>
+    <?php   } 
+            if (in_array('just_spaces', $errors)) { ?>
+                <div class="alert alert-danger" role="alert">Un ou plusieurs champs n'est constitué que d'espaces, merci de bien vouloir renseigner correctement le formulaire.</div>
     <?php   }
         } ?>
 
@@ -43,7 +46,7 @@
                 }    ?>
     </div>
 
-  <button type="submit" class="btn btn-primary" form="create-chapter">Créer le chapitre</button>
+  <button type="submit" class="btn btn-primary mb-2" form="create-chapter">Créer le chapitre</button>
 </form>
 <?php } ?>
 

@@ -13,7 +13,7 @@
                     </button>
                 </div>
             <div class="modal-body">
-                <div class="messages"></div>
+                <div class="messages-subscription"></div>
                 <form action="index.php?action=subscribe" method="post" id="subscribe-form">
                     <div class="form-group">
                         <label for="username">Pseudo</label>

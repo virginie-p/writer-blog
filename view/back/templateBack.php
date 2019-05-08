@@ -28,7 +28,15 @@
             </a>
 
             <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+                
                 <ul class="navbar-nav ml-auto mt-2 mt-lg-0 align-items-center">
+                    <li id="responsive-menu" class="container-fluid menu col-md-2 bg-light border-right">
+                        <nav class="row align-content-around text-center">
+                            <a class="col-12" href="index.php?action=showBannersManagement">Bannières</a><br/>
+                            <a class="col-12" href="index.php?action=showBooksManagement">Livres</a><br/>
+                            <a class="col-12" href="index.php?action=showUsersManagement">Utilisateurs</a><br/>
+                        </nav>
+                    </li>
                     <li class="nav-item m-2">
                         <a href="index.php?action=disconnection">Me déconnecter</a>
                     </li>
@@ -47,7 +55,7 @@
 
     <main role="main" class="container-fluid content-block">
         <div class="row h-100">
-            <section class="container-fluid menu col-md-2 bg-light border-right">
+            <section id="lateral-menu" class="container-fluid menu col-md-2 bg-light border-right">
                 <nav class="row align-content-around text-center">
                     <a class="col-12" href="index.php?action=showBannersManagement">Bannières</a><br/>
                     <a class="col-12" href="index.php?action=showBooksManagement">Livres</a><br/>

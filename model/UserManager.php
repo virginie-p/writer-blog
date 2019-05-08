@@ -164,7 +164,7 @@ class UserManager extends Manager {
         $db = $this->MySQLConnect();
         $req = $db->prepare('DELETE FROM projet_4_users WHERE id = ?');
         
-        $affectedLines = $req->execute(array($user_id));
+        $affected_lines = $req->execute(array($user_id));
 
         return $affected_lines;
     }

@@ -22,7 +22,7 @@ class CommentManager extends Manager {
                             INNER JOIN 
                                 projet_4_chapters AS chapters ON chapters.id = comments.chapter_id
                             WHERE chapter_id = ?
-                            ORDER BY id DESC'
+                            ORDER BY moderation_status = 1 DESC, id ASC'
                             );
 
         $req->execute(array($chapter_id));

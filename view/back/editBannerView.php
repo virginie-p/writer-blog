@@ -16,6 +16,9 @@
     <?php   }
             elseif (in_array('image_or_size_invalid', $errors)) { ?>
                 <div class="alert alert-danger" role="alert">Un problème est survenu lors de la modification de la bannière en BDD. Merci de bien vouloir réessayer.</div>
+    <?php   } 
+            elseif (in_array('just_spaces', $errors)) { ?>
+                <div class="alert alert-danger" role="alert">Un ou plusieurs champs n'est constitué que d'espaces, merci de bien vouloir renseigner correctement le formulaire.</div>
     <?php   }
         }
         elseif (isset($banner_edit_succeed)) { ?>

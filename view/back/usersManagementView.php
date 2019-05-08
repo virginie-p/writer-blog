@@ -8,10 +8,10 @@
       } ?>
 <?php if (isset($errors))  { 
           if (in_array('no_user_id', $errors)) { ?>
-            <div class="alert alert-danger" role="alert">Aucun numéro d'utilisateur renseigné.</div>
+            <div class="alert alert-danger" role="alert">Aucun numéro d'utilisateur renseigné pour la suppression.</div>
     <?php }
           if (in_array('wrong_user_id', $errors)) { ?>
-            <div class="alert alert-danger" role="alert">Mauvais numéro d'utilisateur renseigné.</div>
+            <div class="alert alert-danger" role="alert">Mauvais numéro d'utilisateur renseigné pour la suppression.</div>
     <?php }
         } ?>
 

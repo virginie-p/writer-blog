@@ -16,6 +16,9 @@
     <?php   }
             if (in_array('no_book_id', $errors)) { ?>
                 <div class="alert alert-danger" role="alert">Aucun numéro de livre renseigné pour l'édition.</div>
+    <?php   } 
+            if (in_array('just_spaces', $errors)) { ?>
+                <div class="alert alert-danger" role="alert">Un ou plusieurs champs n'est constitué que d'espaces, merci de bien vouloir renseigner correctement le formulaire.</div>
     <?php   }
         } 
         elseif (isset($book_edit_succeed)) { ?>
@@ -53,7 +56,7 @@
                 }    ?>
     </div>
 
-  <button type="submit" class="btn btn-primary" form="edit-book">Modifier le livre</button>
+  <button type="submit" class="btn btn-primary mb-2" form="edit-book">Modifier le livre</button>
 </form>
 <?php } ?>
 

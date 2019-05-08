@@ -11,6 +11,9 @@
     <?php   } 
             if (in_array('image_or_size_invalid', $errors)) { ?>
                 <div class="alert alert-danger" role="alert">Votre image dépasse la taille maximum autorisée par le serveur (2Mo) ou vous n'avez pas sélectionné d'image.</div>
+    <?php   } 
+            if (in_array('just_spaces', $errors)) { ?>
+                <div class="alert alert-danger" role="alert">Un ou plusieurs champs n'est constitué que d'espaces, merci de bien vouloir renseigner correctement le formulaire.</div>
     <?php   }
         } ?>
 
@@ -55,7 +58,7 @@
                 }    ?>
     </div>
 
-  <button type="submit" class="btn btn-primary" form="create-banner">Créer la bannière</button>
+  <button type="submit" class="btn btn-primary mb-2" form="create-banner">Créer la bannière</button>
 </form>
 
 <?php $content = ob_get_clean(); ?>
