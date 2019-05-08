@@ -155,40 +155,47 @@ class FrontEndController extends Controller {
             if (empty($errors)) { 
                 $upload_data = $this->createImageInFolder($image_input_name, profile_picture_width, profile_picture_height, profile_picture_folder);
 
-                $upload_errors = $upload_data[0];
+                if (is_null($upload_data['upload_errors']) && $upload_data['upload_results']['upload_status'] == true) {
 
-                if (!empty($upload_data[1])) {
-                
-                    $image_name = $upload_data[1];
-
+                    $image_name = $upload_data['upload_results']['image_name'];
                     $user_data['profile_picture'] = $image_name;
 
-                    $new_user = new User($user_data);
-                    $affected_lines = $user_manager->createUser($new_user);
+                } 
+                else {
+                    $errors[] = $upload_data['upload_errors'];
 
-                    if (!$affected_lines) {
-                        $errors[] = 'upload_problem';
-                    } else {
-                        $headers  = 'From: "Virginie PEREIRA" <contact@virginie-pereira.fr>' . "\r\n" .
-                                    'Reply-To: "Virginie PEREIRA" <contact@virginie-pereira.fr>' . "\r\n" .
-                                    'MIME-Version: 1.0' . "\r\n" .
-                                    'Content-type: text/html;  charset=utf-8'. "\r\n" .
-                                    'X-Mailer: PHP/' . phpversion();
-
-                        $message =  '<html><body>'. "\r\n" .
-                                    '<img src="https://virginie-pereira.fr/projet-4/public/images/logo.png" style="width:80px;height:80px"><span style="font-weight:bold">Evasion Littéraire</span>'. "\r\n" .
-                                    '<p> Bonjour ' . $new_user->firstname() . ' !</p>'."\r\n" .
-                                    '<p> Vous êtes bien inscrit sur Evasion Littéraire ! </p>'."\r\n" .
-                                    '<p> N\'hésitez pas à vous connecter très souvent sur le site pour'."\r\n" .
-                                    ' pouvoir profiter des nouveaux chapitres mis en ligne ! :) </p>'."\r\n" .
-                                    '<p> A très bientôt ! </p>' ."\r\n" .
-                                    '</body></html>';
-
-                        mail($new_user->email(), 'Votre inscription à Evasion littéraire', $message, $headers);
-                        echo json_encode([
-                            'status' => 'success'
-                        ]);
+                    if (!empty($upload_data['upload_results']) && !$upload_data['upload_results']['upload_status']) {
+                        $errors[] = 'file_not_moved';
                     }
+                }
+            }
+
+            if(empty($errors)) {
+                $new_user = new User($user_data);
+                $affected_lines = $user_manager->createUser($new_user);
+
+                if (!$affected_lines) {
+                    $errors[] = 'upload_problem';
+                } else {
+                    $headers  = 'From: "Virginie PEREIRA" <contact@virginie-pereira.fr>' . "\r\n" .
+                                'Reply-To: "Virginie PEREIRA" <contact@virginie-pereira.fr>' . "\r\n" .
+                                'MIME-Version: 1.0' . "\r\n" .
+                                'Content-type: text/html;  charset=utf-8'. "\r\n" .
+                                'X-Mailer: PHP/' . phpversion();
+
+                    $message =  '<html><body>'. "\r\n" .
+                                '<img src="https://virginie-pereira.fr/projet-4/public/images/logo.png" style="width:80px;height:80px"><span style="font-weight:bold">Evasion Littéraire</span>'. "\r\n" .
+                                '<p> Bonjour ' . $new_user->firstname() . ' !</p>'."\r\n" .
+                                '<p> Vous êtes bien inscrit sur Evasion Littéraire ! </p>'."\r\n" .
+                                '<p> N\'hésitez pas à vous connecter très souvent sur le site pour'."\r\n" .
+                                ' pouvoir profiter des nouveaux chapitres mis en ligne ! :) </p>'."\r\n" .
+                                '<p> A très bientôt ! </p>' ."\r\n" .
+                                '</body></html>';
+
+                    mail($new_user->email(), 'Votre inscription à Evasion littéraire', $message, $headers);
+                    echo json_encode([
+                        'status' => 'success'
+                    ]);
                 }
             }
         }

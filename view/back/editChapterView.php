@@ -39,9 +39,12 @@
         <label for="chapter-image">Sélectionnez l'image décorative du chapitre</label>
         <input type="file" class="form-control-file" name="chapter-image" aria-describedby="select-image-help">
         <small id="select-image-help" class="form-text text-muted">Votre image ne doit pas dépasser 2 Mo et doit respecter le ratio 595*842px.</small>
-        <?php   if (!empty($upload_errors)) { 
-                    if (in_array('invalid_extension', $upload_errors)) { ?>
+        <?php   if (!empty($errors)) { 
+                    if (in_array('invalid_extension', $errors)) { ?>
                         <div class="alert alert-danger" role="alert">Ce type de fichier n'est pas accepté. Seuls les fichiers .jpeg, .jpg et .png sont acceptés.</div>
+            <?php   }
+                    if(in_array('file_not_moved', $errors)) { ?>
+                        <div class="alert alert-danger" role="alert">Le fichier n'a pas pu être enregistré sur le serveur. Merci de bien vouloir réessayer.</div>
             <?php   } 
                 } ?>
     </div>

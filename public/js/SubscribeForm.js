@@ -47,6 +47,12 @@ $(function() {
                     else if (element == 'just_spaces') {
                         $('.messages-subscription').prepend('<div class="alert alert-danger" role="alert">Votre nom ou votre prénom ne peuvent pas être composés uniquement d\'espaces</div>');
                     }
+                    else if (element == 'invalid_extension') {
+                        $('.messages-subscription').prepend('<div class="alert alert-danger" role="alert">Ce type de fichier n\'est pas accepté. Seuls les fichiers .jpeg, .jpg et .png sont acceptés.</div>');  
+                    }
+                    else if (element == 'file_not_moved') {
+                        $('.messages-subscription').prepend('<div class="alert alert-danger" role="alert">Le fichier n\'a pas pu être enregistré sur le serveur. Merci de bien vouloir réessayer.</div>');  
+                    }
                 });
             }
             else if (data.status === 'success') {

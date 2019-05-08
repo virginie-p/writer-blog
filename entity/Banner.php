@@ -95,6 +95,15 @@ class Banner extends Entity {
         }
     }
 
+    public function setImage($image_link) {
+        if (!is_string($image_link) || empty($image_link)) {
+            $this->errors[] = self::INCORRECT_IMAGE_LINK;
+        }
+        else {
+            $this->image = $image_link;
+        }
+    }
+
     public function setButtonTitle($button_title) {
         $this->button_title = $button_title;
     }

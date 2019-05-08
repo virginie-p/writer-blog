@@ -47,15 +47,14 @@
         <label for="banner-image">Sélectionnez l'image de la bannière</label>
         <input type="file" class="form-control-file" name="banner-image" aria-describedby="select-image-help">
         <small id="select-image-help" class="form-text text-muted">Votre image ne doit pas dépasser 2 Mo et doit respecter le ratio 1280*650px.</small>
-        <?php   if (!empty($upload_errors)) { 
-                    if (in_array('invalid_extension', $upload_errors)) { ?>
-                    <div class="alert alert-danger" role="alert">Ce type de fichier n'est pas accepté. Seuls les fichiers .jpeg, .jpg et .png sont acceptés.</div>
-
-        <?php       } 
-                    elseif (in_array('invalid_name', $upload_errors)) { ?>
-                    <div class="alert alert-danger" role="alert">Merci de renommer votre fichier, un fichier portant le même nom existe déjà en base.</div>
+        <?php   if (!empty($errors)) { 
+                    if (in_array('invalid_extension', $errors)) { ?>
+                        <div class="alert alert-danger" role="alert">Ce type de fichier n'est pas accepté. Seuls les fichiers .jpeg, .jpg et .png sont acceptés.</div>
             <?php   }
-                }    ?>
+                    if(in_array('file_not_moved', $errors)) { ?>
+                        <div class="alert alert-danger" role="alert">Le fichier n'a pas pu être enregistré sur le serveur. Merci de bien vouloir réessayer.</div>
+            <?php   } 
+                } ?>
     </div>
 
   <button type="submit" class="btn btn-primary mb-2" form="create-banner">Créer la bannière</button>

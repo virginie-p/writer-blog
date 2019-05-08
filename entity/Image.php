@@ -39,9 +39,11 @@ class Image {
 
     public function upload($folder) {
         $image_name = time() . $this->name;
-        move_uploaded_file($this->tmp_name, "public/images/" . $folder . "/". $image_name);
+        $upload_status = move_uploaded_file($this->tmp_name, "public/images/" . $folder . "/". $image_name);
 
-        return $image_name;
+        return $upload_results=array(
+            'image_name' => $image_name, 
+            'upload_status' => $upload_status);
     }
 
     public function isExtAllowed() {

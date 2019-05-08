@@ -26,9 +26,7 @@ class BackEndController extends Controller {
         require(__DIR__.'/../view/back/bannersManagementView.php');
     }
 
-    public function createBanner() {
-        $banner_manager = new BannerManager();
-        
+    public function createBanner() {   
         $banner_data = [];
 
         if (isset($_POST) && !empty($_POST)) {
@@ -59,21 +57,24 @@ class BackEndController extends Controller {
 
                     $image_input_name = 'banner-image';
 
+                    if($_FILES[$image_input_name]['error'] != 0) {
+                        $errors[]='image_or_size_invalid';
+                    }
+
                     if (empty($errors)) {
-                        if($_FILES[$image_input_name]['error'] == 0) {
-                            $upload_data = $this->createImageInFolder($image_input_name, $banner_with, $banner_height, $banner_folder);
+                        $upload_data = $this->createImageInFolder($image_input_name, banner_with, banner_height, banner_folder);
+    
+                        if (is_null($upload_data['upload_errors']) && $upload_data['upload_results']['upload_status'] == true) {
+                        
+                            $image_name = $upload_data['upload_results']['image_name'];
+                            $banner_data['image'] = $image_name;
+                        }
+                        else {
+                            $errors[] = $upload_data['upload_errors'];
         
-                            $upload_errors = $upload_data[0];
-        
-                            if (!empty($upload_data[1])) {
-                            
-                                $image_name = $upload_data[1];
-        
-                                $banner_data['image'] = htmlspecialchars($image_name);
+                            if (!empty($upload_data['upload_results']) && !$upload_data['upload_results']['upload_status']) {
+                                $errors[] = 'file_not_moved';
                             }
-        
-                        } else {
-                            $errors[]='image_or_size_invalid';
                         }
                     }
                 }
@@ -82,6 +83,7 @@ class BackEndController extends Controller {
                 }
 
                 if(empty($errors)) {
+                    $banner_manager = new BannerManager();
                     $new_banner = new Banner($banner_data);
 
                     $affected_lines = $banner_manager->createBanner($new_banner);
@@ -129,16 +131,23 @@ class BackEndController extends Controller {
                 }
             
                 if (!empty($_FILES[$image_input_name]['name']) && empty($errors)) {       
-                    if($_FILES[$image_input_name]['error'] == 0) {
-                        $upload_data = $this->createImageInFolder($image_input_name, $banner_with, $banner_height, $banner_folder);
-
-                        $upload_errors = $upload_data[0];
-                        $image_name = $upload_data[1];
-                        
-                        $modified_data['image'] = htmlspecialchars($image_name);
-
-                    } else {
+                    if($_FILES[$image_input_name]['error'] != 0) {
                         $errors[]='image_or_size_invalid';
+                    } 
+                    else {
+                        $upload_data = $this->createImageInFolder($image_input_name, banner_with, banner_height, banner_folder);
+
+                        if (is_null($upload_data['upload_errors']) && $upload_data['upload_results']['upload_status'] == true) {
+                            $image_name = $upload_data['upload_results']['image_name'];
+                            $modified_data['image'] = htmlspecialchars($image_name);
+                        }
+                        else {
+                            $errors[] = $upload_data['upload_errors'];
+        
+                            if (!empty($upload_data['upload_results']) && !$upload_data['upload_results']['upload_status']) {
+                                $errors[] = 'file_not_moved';
+                            }
+                        }
                     }
                 } 
 
@@ -215,28 +224,35 @@ class BackEndController extends Controller {
                 if (empty($errors)) {
                     if($_FILES[$image_input_name]['error'] == 0) {
                         $upload_data = $this->createImageInFolder($image_input_name, book_cover_width, book_cover_height, book_cover_folder);
-
-                        $upload_errors = $upload_data[0];
-
-                        if (!empty($upload_data[1])) {
                         
-                            $image_name = $upload_data[1];
-
+                        if (is_null($upload_data['upload_errors']) && $upload_data['upload_results']['upload_status'] == true)  {
+                        
+                            $image_name = $upload_data['upload_results']['image_name'];
                             $book_data['book_cover_image'] = $image_name;
-
-                            $new_book = new Book($book_data);
-
-                            $affected_lines = $book_manager->createBook($new_book);
-
-                            if (!$affected_lines) {
-                                $errors[] = 'upload_problem';
-                            } else {
-                                header('Location:index.php?action=showBooksManagement&book=creation');
-                                exit;
+                        }
+                        else {
+                            $errors[] = $upload_data['upload_errors'];
+        
+                            if (!is_null($upload_data['upload_results']) && !$upload_data['upload_results']['upload_status']) {
+                                $errors[] = 'file_not_moved';
                             }
                         }
+
                     } else {
                         $errors[]='image_or_size_invalid';
+                    }
+                }
+
+                if(empty($errors)) {
+                    $new_book = new Book($book_data);
+
+                    $affected_lines = $book_manager->createBook($new_book);
+
+                    if (!$affected_lines) {
+                        $errors[] = 'upload_problem';
+                    } else {
+                        header('Location:index.php?action=showBooksManagement&book=creation');
+                        exit;
                     }
                 }
             }
@@ -285,10 +301,18 @@ class BackEndController extends Controller {
                     if($_FILES[$image_input_name]['error'] == 0) {
                         $upload_data = $this->createImageInFolder($image_input_name, book_cover_width, book_cover_height, book_cover_folder);
 
-                        $upload_errors = $upload_data[0];
-                        $image_name = $upload_data[1];
+                        if (is_null($upload_data['upload_errors']) && $upload_data['upload_results']['upload_status'] == true)  {
                         
-                        $modified_data['book_cover_image'] = htmlspecialchars($image_name);
+                            $image_name = $upload_data['upload_results']['image_name'];                        
+                            $modified_data['book_cover_image'] = htmlspecialchars($image_name);
+                        }
+                        else {
+                            $errors[] = $upload_data['upload_errors'];
+        
+                            if (!empty($upload_data['upload_results']) && !$upload_data['upload_results']['upload_status']) {
+                                $errors[] = 'file_not_moved';
+                            }
+                        }
 
                     } else {
                         $errors[]='image_or_size_invalid';
@@ -384,14 +408,19 @@ class BackEndController extends Controller {
                         if($_FILES[$image_input_name]['error'] == 0) {
                             $upload_data = $this->createImageInFolder($image_input_name, chapter_image_width, chapter_image_height, chapter_image_folder);
 
-                            $upload_errors = $upload_data[0];
-
-                            if (!empty($upload_data[1])) {
+                            if (is_null($upload_data['upload_errors']) && $upload_data['upload_results']['upload_status'] == true)  {
                             
-                                $image_name = $upload_data[1];
-
+                                $image_name = $upload_data['upload_results']['image_name'];                        
                                 $chapter_data['image'] = htmlspecialchars($image_name);
                             }
+                            else {
+                                $errors[] = $upload_data['upload_errors'];
+            
+                                if (!empty($upload_data['upload_results']) && !$upload_data['upload_results']['upload_status']) {
+                                    $errors[] = 'file_not_moved';
+                                }
+                            }
+    
                         } else {
                             $errors[]='image_or_size_invalid';
                         }
@@ -452,11 +481,18 @@ class BackEndController extends Controller {
                     if($_FILES[$image_input_name]['error'] == 0) {
                         $upload_data = $this->createImageInFolder($image_input_name, 595, 842, 'chapters_images');
 
-                        $upload_errors = $upload_data[0];
-                        $image_name = $upload_data[1];
+                        if (is_null($upload_data['upload_errors']) && $upload_data['upload_results']['upload_status'] == true)  {
                         
-                        $modified_data['image'] = htmlspecialchars($image_name);
-
+                            $image_name = $upload_data['upload_results']['image_name'];                        
+                            $modified_data['book_cover_image'] = htmlspecialchars($image_name);
+                        }
+                        else {
+                            $errors[] = $upload_data['upload_errors'];
+        
+                            if (!empty($upload_data['upload_results']) && !$upload_data['upload_results']['upload_status']) {
+                                $errors[] = 'file_not_moved';
+                            }
+                        }
                     } else {
                         $errors[]='image_or_size_invalid';
                     } 
