@@ -42,7 +42,8 @@
                     </div>
                     <div class="form-group">
                         <label for="profile-picture">Sélectionner votre photo de profil</label>
-                        <input type="file" class="form-control-file" name="profile-picture">
+                        <input type="file" class="form-control-file" name="profile-picture" aria-describedby="select-profile-picture-help">
+                        <small id="select-profile-picture-help" class="form-text text-muted">Votre photo de profil ne doit pas dépasser 2 Mo et doit respecter le ratio 150*150px.</small>
                     </div>
                 </form>
             </div>

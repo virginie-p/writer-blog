@@ -38,7 +38,7 @@
     <div class="form-group">
         <label for="chapter-image">Sélectionnez l'image décorative du chapitre</label>
         <input type="file" class="form-control-file" name="chapter-image" aria-describedby="select-image-help">
-        <small id="select-image-help" class="form-text text-muted">Votre image ne doit pas dépasser 2 Mo et doit respecter le ratio 595*842px.</small>
+        <small id="select-image-help" class="form-text text-muted">Votre image ne doit pas dépasser 2 Mo et doit respecter le ratio 1250*350px.</small>
         <?php   if (!empty($errors)) { 
                     if (in_array('invalid_extension', $errors)) { ?>
                         <div class="alert alert-danger" role="alert">Ce type de fichier n'est pas accepté. Seuls les fichiers .jpeg, .jpg et .png sont acceptés.</div>
