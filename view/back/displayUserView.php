@@ -11,7 +11,7 @@
         } ?>
 
 <?php if (isset($user) && $user != false) { ?>
-<h3 class="mt-2 mb-4 text-center">Fiche utilisateur de : "<?=$user->username()?>"</h3>
+<h3 class="mt-2 mb-4 text-center">Fiche utilisateur de : "<?=htmlspecialchars($user->username())?>"</h3>
 <div class="container user-info">
     <div class="row d-flex justify-content-center mx-auto">
         <div class="col-lg-4 col-md-12 mb-4">

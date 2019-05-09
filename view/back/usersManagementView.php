@@ -31,14 +31,14 @@
   <tbody>
     <?php foreach($users as $user) { ?>
     <tr class="justify-content-center">
-        <th scope="row"><?= $user->id() ?></th>
-        <td><?= $user->username() ?></td>
-        <td><?= $user->lastname() ?></td>
-        <td><?= $user->firstname()?></td>
-        <td><?= $user->email() ?></td>
-        <td><?= $user->creationDate() ?></td>
+        <th scope="row"><?=$user->id()?>?></th>
+        <td><?=htmlspecialchars($user->username())?></td>
+        <td><?=$user->lastname()?></td>
+        <td><?=$user->firstname()?></td>
+        <td><?=$user->email() ?></td>
+        <td><?=$user->creationDate()?></td>
         <td>
-            <a href="index.php?action=displayUser&amp;id=<?= $user->id() ?>">
+            <a href="index.php?action=displayUser&amp;id=<?=$user->id()?>">
                 <img src="https://img.icons8.com/plasticine/100/000000/search-more.png">
             </a>
             <a data-toggle="modal" id="user-<?=$user->id()?>" data-action="delete" href="#deleteModal">
