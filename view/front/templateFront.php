@@ -5,6 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Escapade littéraire</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta property="og:image" content="https://virginie-pereira.fr/projet-4/public/images/og_image_fb.png"/> 
+    <meta property="og:title" content="Evasion Littéraire"/>
+    <meta property="og:type" content="article"/>
+    <meta property="og:description" content="Des livres disponibles depuis tous vos écrans !"/> 
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" media="screen" href="public\css\main.css">
     <link rel="icon" href="favicon.ico" />
