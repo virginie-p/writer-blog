@@ -569,7 +569,7 @@ class BackEndController extends Controller {
     public function deleteUser() {
         if (isset($_GET['id']) && $_GET['id'] > 0) {
             $user_manager = new UserManager();
-            $user = $user_manager->getUser($_GET['id']);
+            $user = $user_manager->getMember($_GET['id']);
             $affected_line = $user_manager->deleteUser($_GET['id']);
 
             if (!$user){

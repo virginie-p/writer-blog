@@ -117,7 +117,7 @@ class FrontEndController extends Controller {
                 }
             }
 
-            if (!preg_match('#[0-9A-Za-z.-]{6,}#', $_POST['subscribe-username'])){
+            if (!preg_match('#[0-9A-Za-záàâäãåçéèêëíìîïñóòôöõúùûüýÿæœÁÀÂÄÃÅÇÉÈÊËÍÌÎÏÑÓÒÔÖÕÚÙÛÜÝŸÆŒ._-]{6,}#', $_POST['subscribe-username'])){
                 $errors[] = 'username_not_matching_regex' ;
             }
 

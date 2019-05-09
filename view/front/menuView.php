@@ -18,6 +18,7 @@
                     <div class="form-group">
                         <label for="username">Pseudo</label>
                         <input type="text" class="form-control" name="subscribe-username" value="<?php if (isset($_POST['subscribe-username'])) { echo $_POST['subscribe-username']; }?>">
+                        <small id="passwordHelp" class="form-text text-muted">Votre login doit être composé de 6 caractères minimum.</small>
                     </div>
                     <div class="form-group">
                         <label for="subscribe-password">Mot de passe</label>
