@@ -31,7 +31,7 @@
   <tbody>
     <?php foreach($users as $user) { ?>
     <tr class="justify-content-center">
-        <th scope="row"><?=$user->id()?>?></th>
+        <th scope="row"><?=$user->id()?></th>
         <td><?=htmlspecialchars($user->username())?></td>
         <td><?=$user->lastname()?></td>
         <td><?=$user->firstname()?></td>

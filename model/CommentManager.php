@@ -35,12 +35,12 @@ class CommentManager extends Manager {
     public function getChapterComments($chapter_id) {
         $db = $this->MySQLConnect();
         $req = $db->prepare('SELECT 
-                                comments.id, 
+                                comments.id,
                                 user_id,
                                 users.username,
                                 users.profile_picture,
-                                comments.title, 
-                                comments.content, 
+                                comments.title,
+                                comments.content,
                                 DATE_FORMAT(comments.creation_date, \'%d/%m/%Y à %Hh%i\') AS creation_date, 
                                 moderation_status
                             FROM projet_4_comments AS comments
