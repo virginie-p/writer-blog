@@ -36,7 +36,8 @@ class CommentManager extends Manager {
         $db = $this->MySQLConnect();
         $req = $db->prepare('SELECT 
                                 comments.id, 
-                                user_id, 
+                                user_id,
+                                chapter_id,
                                 users.username,
                                 chapters.title,
                                 comments.title, 

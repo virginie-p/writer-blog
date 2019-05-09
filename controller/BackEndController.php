@@ -637,7 +637,7 @@ class BackEndController extends Controller {
                 $errors[] = 'wrong_comment_id';
             }
             else {
-                header('Location:index.php?action=showCommentsManagement&comment=delete');
+                header('Location:index.php?action=showCommentsManagement&id='. $comment->chapterId().'&comment=delete');
                 exit;
             }
         }
