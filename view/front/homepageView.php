@@ -35,7 +35,7 @@
   <h2 class="row justify-content-center text-center mt-4">Les derniers chapitres postés</h2>
   <div class="row justify-content-center">
     <?php foreach($latest_chapters as $latest_chapter) { ?>
-      <div class="card m-3" style="width: 20rem; height:20rem">
+      <div class="card m-3" style="width: 20.5rem; height:20.5rem">
         <img src="public/images/chapters_images/<?=$latest_chapter->image()?>" class="card-img-top" alt="Image du chapitre intitulé <?=$latest_chapter->title()?>">
         <div class="card-body">
           <h4><?=$latest_chapter->book_title?></h4>
