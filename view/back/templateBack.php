@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" media="screen" href="public\css\main.css">
+    <link rel="icon" href="favicon.ico" />
     <script src="https://cloud.tinymce.com/5/tinymce.min.js?apiKey=d5vv90gjbxrlkogbd4bmlpy6bbsfy9ml7c7dd5pjujl5ska4"></script>
     <script>
         tinymce.init({
