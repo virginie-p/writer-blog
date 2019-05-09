@@ -89,7 +89,7 @@ class FrontEndController extends Controller {
             $chapter = $chapter_manager->getChapter($_GET['id']);
 
             $comment_manager = new CommentManager();
-            $comments = $comment_manager->getComments($_GET['id']);
+            $comments = $comment_manager->getChapterComments($_GET['id']);
 
             if (!$chapter) {
                 $error = 'wrong_chapter_id';

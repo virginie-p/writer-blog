@@ -32,6 +32,33 @@ class CommentManager extends Manager {
         return $comments;    
     }
 
+    public function getChapterComments($chapter_id) {
+        $db = $this->MySQLConnect();
+        $req = $db->prepare('SELECT 
+                                comments.id, 
+                                user_id,
+                                users.username,
+                                users.profile_picture,
+                                comments.title, 
+                                comments.content, 
+                                DATE_FORMAT(comments.creation_date, \'%d/%m/%Y à %Hh%i\') AS creation_date, 
+                                moderation_status
+                            FROM projet_4_comments AS comments
+                            INNER JOIN 
+                                projet_4_users AS users ON users.id = comments.user_id
+                            INNER JOIN 
+                                projet_4_chapters AS chapters ON chapters.id = comments.chapter_id
+                            WHERE chapter_id = ?
+                            ORDER BY id DESC'
+                            );
+
+        $req->execute(array($chapter_id));
+        $req->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'App\entity\Comment');
+        $comments = $req->fetchAll();
+
+        return $comments;    
+    }
+
     public function getComment($comment_id) {
         $db = $this->MySQLConnect();
         $req = $db->prepare('SELECT 
