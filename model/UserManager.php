@@ -103,43 +103,7 @@ class UserManager extends Manager {
             ));
     
         }
-        elseif ($user->userType() == 2) {
-            $req = $db->prepare('INSERT INTO projet_4_users(
-                username, 
-                password,
-                email,
-                firstname, 
-                lastname, 
-                user_type, 
-                profile_picture, 
-                birthdate, 
-                description, 
-                creation_date
-            ) 
-            VALUES (
-                :username, 
-                :password,
-                :email, 
-                :firstname, 
-                :lastname, 
-                :user_type, 
-                :profile_picture, 
-                :birthdate, 
-                :description, 
-                NOW())');
-    
-            $affected_lines = $req->execute(array(
-                'username' => $user->username(),
-                'password' => $user->password(),
-                'email' => $user->email(),
-                'firstname' => $user->firstname(),
-                'lastname' => $user->lastname(),
-                'user_type' => $user->userType(),
-                'profile_picture' => $user->profilePicture(),
-                'birthdate' => $user->birthdate(),
-                'description' => $user->description()
-            ));
-        }
+        
         return $affected_lines;
     }
 

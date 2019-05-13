@@ -52,6 +52,7 @@ class FrontEndController extends Controller {
     public function disconnectUser() {
         $_SESSION = [];
         session_destroy();
+
         header('Location: index.php');
         exit;
     }

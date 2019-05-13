@@ -3,23 +3,12 @@
 namespace App\entity;
 
 class Entity {
-    /**
-     * Class constructor which assign values that have been passed in parameters to matching attributes 
-     *
-     * @param array $donnees The values to allocate
-     * @return void
-     */
+    
     public function __construct(array $data = [])
     {
         $this->hydrate($data);
     }
-
-    /**
-     * Method that allocates specified valued to the matching attributes
-     *
-     * @param array $donnees The values to allocate
-     * @return void
-     */
+    
     public function hydrate($data)
     {
       foreach ($data as $key => $value)
